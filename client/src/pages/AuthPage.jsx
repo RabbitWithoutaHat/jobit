@@ -12,6 +12,7 @@ import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles  } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useState } from 'react';
 
 function Copyright() {
   return (
@@ -54,8 +55,8 @@ export default function AuthPage() {
     password: ''
   })
 
-  changeHandler = event => {
-    setForm({...form, [e.target.name]: event.target.value})
+  const changeHandler = event => {
+    setForm({...form, [event.target.name]: event.target.value})
   }
 
   return (
