@@ -1,0 +1,5 @@
+{
+  "port": 5000,
+  "mongoUri": "mongodb+srv://fekla:feklaUserMongo@cluster0-3ez3a.azure.mongodb.net/app?retryWrites=true&w=majority",
+  "jwtSecret": "jobit sign user dem"
+}
