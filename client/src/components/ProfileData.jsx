@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const AutorsPage = () => {
+export const ProfileData = () => {
   return (
     <div>Autor</div>
   )

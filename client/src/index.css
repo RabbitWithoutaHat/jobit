@@ -2,6 +2,7 @@ body {
   margin: 0;
 }
 
-.MuiAppBar-colorSecondary {
-  background-color: red;
+.svg {
+  width: 400px;
+  height: 400px;
 }

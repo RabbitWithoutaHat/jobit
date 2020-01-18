@@ -1,21 +1,16 @@
 const { Schema, model, Types } = require('mongoose');
 
 const schema = new Schema({
-  email: {
+  name: {
     type: String,
     required: true,
     unique: true,
   },
-  nick: {
-    type: String,
-  },
-  about: {
-    type: String,
-  },
-  password: {
+  description: {
     type: String,
     required: true,
   },
+  location: String,
   reviews: [
     {
       type: Types.ObjectId,
@@ -24,4 +19,4 @@ const schema = new Schema({
   ],
 });
 
-module.exports = model('User', schema);
+module.exports = model('Company', schema);
