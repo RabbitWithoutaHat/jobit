@@ -10,7 +10,8 @@ import { TextField } from '@material-ui/core'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { LocationSearchInput } from '../../components/LocationSearchInput'
-import Snackbar from '@material-ui/core/Snackbar'
+import Snackbar from '@material-ui/core/Snackbar';
+
 
 import Loader from '../../components/Loader'
 
@@ -67,6 +68,14 @@ export const NewReviewPage = () => {
 
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.value })
+  }
+
+  const submitHandler = async () => {
+    console.log('submitHandler -> form', form)
+    // try {
+    //   const data = await request('/api/auth/register', 'POST', { ...form });
+    //   errorMessage(data.message);
+    // } catch (error) {}
   }
 
   const getUser = useCallback(async () => {
