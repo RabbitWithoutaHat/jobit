@@ -1,16 +1,18 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { NewReviewRating } from '../components/NewReviewRating';
-import { NewReviewCheckbox } from '../components/NewReviewCheckbox';
-import { NewReviewMap } from '../components/NewReviewMap';
-import { useHttp } from '../hooks/http.hook';
-import { AuthContext } from '../context/AuthContext';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import { TextField } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { NewReviewRating } from '../../components/NewReviewRating'
+import { NewReviewCheckbox } from '../../components/NewReviewCheckbox'
+// import { NewReviewMap } from '../../components/NewReviewMap';
+import { useHttp } from '../../hooks/http.hook'
+import { AuthContext } from '../../context/AuthContext'
+import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+import { TextField } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import { LocationSearchInput } from '../../components/LocationSearchInput'
+import Snackbar from '@material-ui/core/Snackbar'
 
-import Loader from '../components/Loader';
+import Loader from '../../components/Loader'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     boxSizing: 'border-box',
   },
   submit: {
-    margin: theme.spacing(3, 0, 15  ),
+    margin: theme.spacing(3, 0, 15),
   },
   mainGrid: {
     justifyContent: 'center',
@@ -29,8 +31,12 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(4),
   },
   mapContainer: {
-    height: 400,
     marginBottom: theme.spacing(3),
+  },
+  ratingCheckboxContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   map: {
     height: 400,
@@ -50,32 +56,35 @@ const useStyles = makeStyles(theme => ({
   avatarGrid: {
     marginTop: 40,
   },
-}));
+}))
 
 export const NewReviewPage = () => {
-  const classes = useStyles();
-  const { token, userId } = useContext(AuthContext);
-  const { request, loading } = useHttp();
-  const [user, setUser] = useState(null);
+  const classes = useStyles()
+  const { token, userId } = useContext(AuthContext)
+  const { request, loading } = useHttp()
+  const [user, setUser] = useState(null)
+  const [form, setForm] = useState({})
+
+  const changeHandler = event => {
+    setForm({ ...form, [event.target.name]: event.target.value })
+  }
 
   const getUser = useCallback(async () => {
     try {
       const fetched = await request(`/api/user/${userId}`, 'GET', null, {
         Authorization: `Bearer ${token}`,
-      });
-      setUser(fetched);
+      })
+      setUser(fetched)
     } catch (e) {}
-  }, [token, request]);
+  }, [token, request])
 
   useEffect(() => {
-    getUser();
-  }, [getUser]);
+    getUser()
+  }, [getUser])
 
   if (loading) {
-    return <Loader />;
+    return <Loader />
   }
-  console.log(user);
-
   return (
     <div className={classes.root}>
       <Grid className={classes.mainGrid} container spacing={3}>
@@ -93,10 +102,19 @@ export const NewReviewPage = () => {
                 id="name"
                 label="Название компании"
                 autoFocus
+                onChange={changeHandler}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField variant="outlined" required fullWidth id="position" label="Должность" name="position" />
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="position"
+                label="Должность"
+                name="position"
+                onChange={changeHandler}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -108,6 +126,7 @@ export const NewReviewPage = () => {
                 name="review"
                 label="Отзыв"
                 id="review"
+                onChange={changeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -120,20 +139,35 @@ export const NewReviewPage = () => {
                 name="questions"
                 label="Вопросы и задачи на собеседовании"
                 id="questions"
+                onChange={changeHandler}
               />
             </Grid>
-            <NewReviewRating />
-            <NewReviewCheckbox />
             <Grid className={classes.mapContainer} item xs={12}>
-              <NewReviewMap className={classes.map} />
+              <LocationSearchInput form={form} setForm={setForm} />
+            </Grid>
+            <Grid className={classes.ratingCheckboxContainer} item xs={12}>
+              <NewReviewRating form={form} setForm={setForm} />
+              <NewReviewCheckbox form={form} setForm={setForm} />
             </Grid>
           </Grid>
 
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+          <Button
+            onClick={submitHandler}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
             Отправить
           </Button>
         </form>
+        <Snackbar
+          message={form.error}
+          autoHideDuration={4000}
+          open={!!form.error}
+        />
       </Grid>
     </div>
-  );
-};
+  )
+}

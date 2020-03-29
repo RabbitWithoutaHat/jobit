@@ -51,8 +51,6 @@ export const ProfilePage = () => {
   if (loading) {
     return <Loader />;
   }
-  console.log(user);
-
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>

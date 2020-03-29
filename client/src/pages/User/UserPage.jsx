@@ -1,8 +1,8 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom';
-import { useHttp } from '../hooks/http.hook';
-import { AuthContext } from '../context/AuthContext';
-import Loader from '../components/Loader';
+import { useHttp } from '../../hooks/http.hook';
+import { AuthContext } from '../../context/AuthContext';
+import Loader from '../../components/Loader';
 
 export const UserPage = () => {
   const { token } = useContext(AuthContext);
@@ -26,7 +26,5 @@ export const UserPage = () => {
   if (loading) {
     return <Loader />;
   }
-  console.log(user);
-
   return <>{!loading && user && <div>{user.email}</div>}</>;
 };

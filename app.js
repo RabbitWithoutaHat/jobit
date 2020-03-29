@@ -1,7 +1,6 @@
 const express = require('express');
 const config = require('config');
 const mongoose = require('mongoose');
-const path = require('path');
 
 const app = express();
 console.log(__dirname);
@@ -13,7 +12,6 @@ app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/user', require('./routes/user.routes'));
 app.use('/api/company', require('./routes/company.routes'));
 app.use('/api/review', require('./routes/review.routes'));
-
 
 const PORT = config.get('port') || 5000;
 

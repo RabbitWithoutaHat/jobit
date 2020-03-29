@@ -5,7 +5,8 @@
     "no-console": "off",
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-use-before-define": ["error", { "functions": false, "classes": true }],
-    "default-case": "off"
+    "default-case": "off",
+    "no-unused-expressions": "warn"
   },
   "plugins": ["prettier"],
   "env": { "browser": true, "node": true }

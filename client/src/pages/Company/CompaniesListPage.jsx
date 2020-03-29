@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useHttp } from '../hooks/http.hook';
-import { AuthContext } from '../context/AuthContext';
-import Loader from '../components/Loader';
+import { useHttp } from '../../hooks/http.hook';
+import { AuthContext } from '../../context/AuthContext';
+import Loader from '../../components/Loader';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const UsersListPage = () => {
+export const CompaniesListPage = () => {
   const classes = useStyles();
   const { token } = useContext(AuthContext);
   const { request, loading } = useHttp();
@@ -56,7 +56,7 @@ export const UsersListPage = () => {
 
   const getList = useCallback(async () => {
     try {
-      const fetched = await request(`/api/user`, 'GET', null, {
+      const fetched = await request(`/api/company`, 'GET', null, {
         Authorization: `Bearer ${token}`,
       });
       setList(fetched);
@@ -70,16 +70,14 @@ export const UsersListPage = () => {
   if (loading) {
     return <Loader />;
   }
-  console.log(list);
-
   return (
     <>
       {!loading && list && (
         <main>
           <Container className={classes.cardGrid} maxWidth="md">
             <Grid container spacing={4}>
-              {list.map(user => (
-                <Grid item key={user._id} xs={12} sm={6} md={6}>
+              {list.map(company => (
+                <Grid item key={company._id} xs={12} sm={6} md={6}>
                   <Card className={classes.card}>
                     <CardMedia
                       className={classes.cardMedia}
@@ -87,13 +85,13 @@ export const UsersListPage = () => {
                       image="https://source.unsplash.com/featured/?people"
                       title="Image title"
                     />
-                    <CardContent className={classes.cardContent}>
+                    {/* <CardContent className={classes.cardContent}>
                       <Typography gutterBottom variant="h4" component="h2">
                         {user.nick ? user.nick : user.email.split('@')[0]}
                       </Typography>
                       <Typography gutterBottom variant="h6">Отзывов: {user.reviews.length}</Typography>
                       <Typography>{user.about? user.about : ''}</Typography>
-                    </CardContent>
+                    </CardContent> */}
                     <CardActions>
                       <Button size="small" color="primary">
                         Прочитать отзывы

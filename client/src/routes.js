@@ -1,17 +1,18 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { UserPage } from './pages/UserPage';
-import { CompanyPage } from './pages/CompanyPage';
+import { UserPage } from './pages/User/UserPage';
+import { CompanyPage } from './pages/Company/CompanyPage';
 import { MainPage } from './pages/MainPage';
-import { ReviewPage } from './pages/ReviewPage';
-import {ProfilePage} from './pages/ProfilePage'
-import { CompaniesListPage } from './pages/CompaniesListPage'
-import { UsersListPage } from './pages/UsersListPage'
-import { ReviewsListPage } from './pages/ReviewsListPage'
-import { NewReviewPage } from './pages/NewReviewPage'
+import { ReviewPage } from './pages/Review/ReviewPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { CompaniesListPage } from './pages/Company/CompaniesListPage';
+import { UsersListPage } from './pages/User/UsersListPage';
+import { ReviewsListPage } from './pages/Review/ReviewsListPage';
+import { NewReviewPage } from './pages/Review/NewReviewPage';
 import AuthPage from './pages/AuthPage';
 
 export const useRoutes = isAuthenticated => {
+  console.log("isAuthenticated", isAuthenticated)
   if (isAuthenticated) {
     return (
       <Switch>

@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import { LocationContext } from '../context/LocationContext'
 const _ = require("lodash");
 const { compose, withProps, lifecycle } = require("recompose");
 const {
@@ -56,7 +57,6 @@ export const NewReviewMap = compose(
             center: nextCenter,
             markers: nextMarkers,
           });
-          console.log(nextMarkers);
         },
       })
     },
