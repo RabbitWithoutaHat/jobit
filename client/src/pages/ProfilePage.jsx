@@ -33,7 +33,7 @@ export const ProfilePage = () => {
   const classes = useStyles();
   const { token, userId } = useContext(AuthContext);
   const { request, loading } = useHttp();
-  const [user, setUser] = useState(null);
+  const [setUser] = useState(null);
 
   const getUser = useCallback(async () => {
     try {

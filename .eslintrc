@@ -6,7 +6,10 @@
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-use-before-define": ["error", { "functions": false, "classes": true }],
     "default-case": "off",
-    "no-unused-expressions": "warn"
+    "no-unused-expressions": "warn",
+    "linebreak-style": 0,
+    "semi": 0,
+    "object-curly-newline": "off"
   },
   "plugins": ["prettier"],
   "env": { "browser": true, "node": true }
