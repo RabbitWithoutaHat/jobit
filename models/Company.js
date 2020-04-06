@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model, Types } = require('mongoose')
 
 const schema = new Schema({
   name: {
@@ -10,13 +10,15 @@ const schema = new Schema({
     type: String,
     required: true,
   },
-  location: String,
   reviews: [
     {
       type: Types.ObjectId,
       ref: 'Review',
     },
   ],
-});
+  commonRate: Number,
+  address: String,
+  latLng: { lat: Number, lng: Number },
+})
 
-module.exports = model('Company', schema);
+module.exports = model('Company', schema)

@@ -5,6 +5,8 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField } from '@material-ui/core'
+import { InputLabel } from '@material-ui/core'
+import { FilledInput } from '@material-ui/core'
 const useStyles = makeStyles(theme => ({
   inputWrapper: {},
   locationInput: {
@@ -12,6 +14,10 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(4),
     width: '100%',
     height: 40,
+    '& .MuiInputLabel-formControl': {
+      transform: 'translate(0, 1px) scale(0.75)',
+      color: '#0277bd',
+    },
   },
   autocompleteDropdownContainer: {
     width: '100%',
@@ -29,18 +35,24 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const LocationSearchInput = ({ form, setForm }) => {
-  const classes = useStyles()
+export const LocationSearchInput = ({ form, setForm, setError }) => {
+  const focusedLabel = form.address
+    ? {
+        transform: 'translate(0, 1px) scale(0.75)',
+        color: '#0277bd',
+      }
+    : ''
+  console.log('LocationSearchInput -> focusedLabel', focusedLabel)
+  const classes = useStyles(focusedLabel)
 
   const changeHandler = event => {
     setForm({ ...form, address: event })
   }
   const handleSelect = address => {
-    console.log('LocationSearchInput -> address', address)
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => setForm({ ...form, address, latLng }))
-      .catch(error => setForm({ ...form, error }))
+      .catch(error => setError(error))
   }
 
   return (
@@ -53,23 +65,25 @@ export const LocationSearchInput = ({ form, setForm }) => {
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <>
+          {/* <FilledInput htmlFor="address"> */}
+          {/* Адрес */}
           <TextField
+            className="myClass"
+            // InputLabelProps={{ shrink: true }}
+            id="address"
             fullWidth
             label="Адрес"
-            autoFocus
+            value={form.address}
+            filled={true}
+            shrink
             {...getInputProps({
               // placeholder: 'Search Places ...',
               className: classes.locationInput,
             })}
           />
-          {/* <input
-            {...getInputProps({
-              placeholder: 'Search Places ...',
-              className: classes.locationInput,
-            })}
-          /> */}
+          {/* </FilledInput> */}
           <div className={classes.autocompleteDropdownContainer}>
-            {loading && <div>Loading...</div>}
+            {loading && <div>Загрузка...</div>}
             {suggestions.map(suggestion => {
               return (
                 <div

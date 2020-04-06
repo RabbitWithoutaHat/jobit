@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useContext } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { useHttp } from '../hooks/http.hook';
-import Snackbar from '@material-ui/core/Snackbar';
-import { AuthContext } from '../context/AuthContext';
+import React, { useEffect, useState, useContext } from 'react'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import Link from '@material-ui/core/Link'
+import Grid from '@material-ui/core/Grid'
+import Box from '@material-ui/core/Box'
+import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import { useHttp } from '../hooks/http.hook'
+import Snackbar from '@material-ui/core/Snackbar'
+import { AuthContext } from '../context/AuthContext'
 
 function Copyright() {
   return (
@@ -26,7 +26,7 @@ function Copyright() {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
 
 const useStyles = makeStyles(theme => ({
@@ -54,37 +54,37 @@ const useStyles = makeStyles(theme => ({
   label: {
     marginBottom: theme.spacing(3),
   },
-}));
+}))
 
 export default function AuthPage() {
   const auth = useContext(AuthContext)
-  const { loading, error, request, clearError } = useHttp();
-  const classes = useStyles();
+  const { loading, error, request, clearError } = useHttp()
+  const classes = useStyles()
   const [form, setForm] = useState({
     email: '',
     password: '',
-  });
-  const [errorMessage, setError] = useState();
+  })
+  const [errorMessage, setError] = useState()
   useEffect(() => {
-    setError(error);
-  }, [error]);
+    setError(error)
+  }, [error])
 
   const changeHandler = event => {
-    setForm({ ...form, [event.target.name]: event.target.value });
-  };
+    setForm({ ...form, [event.target.name]: event.target.value })
+  }
 
   const registerHandler = async () => {
     try {
-      const data = await request('/api/auth/register', 'POST', { ...form });
-      errorMessage(data.message);
+      const data = await request('/api/auth/register', 'POST', { ...form })
+      setError(data.message)
     } catch (error) {}
-  };
+  }
   const loginHandler = async () => {
     try {
-      const data = await request('/api/auth/login', 'POST', { ...form });
+      const data = await request('/api/auth/login', 'POST', { ...form })
       auth.login(data.token, data.userId)
     } catch (error) {}
-  };
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -163,9 +163,9 @@ export default function AuthPage() {
         autoHideDuration={4000}
         open={!!errorMessage}
         onClose={() => {
-          clearError();
+          clearError()
         }}
       />
     </Container>
-  );
+  )
 }
