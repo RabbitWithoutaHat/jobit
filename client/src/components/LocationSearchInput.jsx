@@ -24,14 +24,12 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     backgroundColor: 'white',
     fontSize: '1rem',
-    fontFamily: 'inherit',
     zIndex: 5,
   },
   suggestioItem: {
     cursor: 'pointer',
     fontSize: '1rem',
     lineHeight: '1.5rem',
-    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
   },
 }))
 

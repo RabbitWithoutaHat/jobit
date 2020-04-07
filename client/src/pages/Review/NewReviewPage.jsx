@@ -71,7 +71,6 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     fontSize: '1rem',
     lineHeight: '1.5rem',
-    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
   },
 }))
 
@@ -138,7 +137,7 @@ export const NewReviewPage = () => {
   return (
     <div className={classes.root}>
       <Grid className={classes.mainGrid} container spacing={3}>
-        <form className={classes.form} noValidate>
+        <form className={classes.form}>
           <Grid container spacing={2}>
             <Grid className={classes.titleGrid} item xs={12}>
               <Typography variant="h4"> Добавить отзыв</Typography>

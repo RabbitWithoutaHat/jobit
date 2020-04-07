@@ -6,10 +6,22 @@ const schema = new Schema({
     required: true,
     unique: true,
   },
-  nick: {
+  login: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
+  location: {
     type: String,
   },
   about: {
+    type: String,
+  },
+  siteUrl: {
+    type: String,
+  },
+  gitUrl: {
     type: String,
   },
   password: {
