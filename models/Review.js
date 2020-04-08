@@ -9,6 +9,7 @@ const schema = new Schema({
     type: Types.ObjectId,
     ref: 'Company',
   },
+  companyName: String,
   date: Date,
   position: String,
   review: String,

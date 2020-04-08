@@ -9,7 +9,9 @@
     "no-unused-expressions": "warn",
     "linebreak-style": 0,
     "semi": 0,
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "no-underscore-dangle": "off",
+    "consistent-return": "off"
   },
   "plugins": ["prettier"],
   "env": { "browser": true, "node": true }
