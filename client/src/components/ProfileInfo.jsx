@@ -1,5 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { useHttp } from '../hooks/http.hook'
+import { AuthContext } from '../context/AuthContext'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -51,12 +53,27 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function ProfileInfo({ setIsEdit, user }) {
+export default function ProfileInfo({ setIsEdit, user, setUser }) {
   const classes = useStyles()
+  const { token, userId } = useContext(AuthContext)
+  const { request, loading } = useHttp()
 
   const onClickEditProfile = () => {
     setIsEdit(true)
   }
+
+  const getUser = useCallback(async () => {
+    try {
+      const fetched = await request(`/api/user/${userId}`, 'GET', null, {
+        Authorization: `Bearer ${token}`,
+      })
+      setUser(fetched)
+    } catch (e) {}
+  }, [token, request])
+
+  useEffect(() => {
+    getUser()
+  }, [getUser])
 
   return (
     <div className={classes.root}>
@@ -70,28 +87,28 @@ export default function ProfileInfo({ setIsEdit, user }) {
         </Grid>
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
           <Typography className={classes.headeProfileName}>
-            Кетурка Владислава
+            {user.login || null}
           </Typography>
+          <Typography className={classes.headeProfileName}>
+            {user.email || null}
+          </Typography>
+        </Grid>
+
+        <Grid className={classes.column} item xs={12} sm={3} lg={2}>
           <Typography className={classes.headeProfileName}>
             {user.location || null}
           </Typography>
-        </Grid>
-
-        <Grid className={classes.column} item xs={12} sm={3} lg={2}>
           <Typography className={classes.headeProfileName}>
-            http://lev.love.krol
-          </Typography>
-          <Typography className={classes.headeProfileName}>
-            https://github.com/Lev3107dfcccccccccccc
+            {user.phone || null}
           </Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
           <Typography className={classes.headeProfileName}>
-            8-977-975-30-20
+            {user.gitUrl || null}
           </Typography>
           <Typography className={classes.headeProfileName}>
-            if31011997@gmail.com
+            {user.siteUrl || null}
           </Typography>
         </Grid>
 

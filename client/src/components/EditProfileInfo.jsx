@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function EditProfileInfo({ setIsEdit }) {
+export default function EditProfileInfo({ setIsEdit, user }) {
   const classes = useStyles()
   const [form, setForm] = useState({})
   const { token, userId } = useContext(AuthContext)
@@ -63,7 +63,8 @@ export default function EditProfileInfo({ setIsEdit }) {
     setIsEdit(false)
   }
 
-  const onClickEditProfile = async () => {
+  const onClickEditProfile = async (event) => {
+    event.preventDefault()
     try {
       await request(
         `/api/user`,
@@ -96,49 +97,7 @@ export default function EditProfileInfo({ setIsEdit }) {
               id="login"
               label="ФИО / Логин"
               name="login"
-              value={'asd'}
-              onChange={changeHandler}
-            />
-            <TextField
-              fullWidth
-              id="location"
-              label="Город"
-              name="location"
-              //   placeholder="Москва"
-              onChange={changeHandler}
-            />
-          </Grid>
-
-          <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-            <TextField
-              // variant="outlined"
-              fullWidth
-              id="siteUrl"
-              type="url"
-              label="Site"
-              name="siteUrl"
-              onChange={changeHandler}
-            />
-            <TextField
-              // variant="outlined"
-              fullWidth
-              id="gitUrl"
-              type="url"
-              label="Git"
-              name="gitUrl"
-              onChange={changeHandler}
-            />
-          </Grid>
-
-          <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-            <TextField
-              // variant="outlined"
-              fullWidth
-              id="phone"
-              type="tel"
-              label="Телефон"
-              placeholder="8-999-999-99-99"
-              name="phone"
+              defaultValue={user.login}
               onChange={changeHandler}
             />
             <TextField
@@ -147,6 +106,48 @@ export default function EditProfileInfo({ setIsEdit }) {
               type="password"
               label="Пароль"
               name="password"
+              onChange={changeHandler}
+            />
+          </Grid>
+
+          <Grid className={classes.column} item xs={12} sm={3} lg={2}>
+            <TextField
+              fullWidth
+              id="location"
+              label="Город"
+              name="location"
+              defaultValue={user.location}
+              onChange={changeHandler}
+            />
+            <TextField
+              // variant="outlined"
+              fullWidth
+              id="phone"
+              type="tel"
+              label="Телефон"
+              name="phone"
+              defaultValue={user.phone}
+              onChange={changeHandler}
+            />
+          </Grid>
+
+          <Grid className={classes.column} item xs={12} sm={3} lg={2}>
+            <TextField
+              fullWidth
+              id="gitUrl"
+              type="url"
+              label="Git"
+              name="gitUrl"
+              defaultValue={user.gitUrl}
+              onChange={changeHandler}
+            />
+            <TextField
+              fullWidth
+              id="siteUrl"
+              type="url"
+              label="Site"
+              name="siteUrl"
+              defaultValue={user.siteUrl}
               onChange={changeHandler}
             />
           </Grid>
