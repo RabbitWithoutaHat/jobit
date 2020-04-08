@@ -12,4 +12,10 @@ export const theme = createMuiTheme({
   status: {
     danger: 'orange',
   },
+  typography: {
+    fontFamily: [
+      "'Exo 2'",
+      'sans-serif',
+    ].join(','),
+  },
 });

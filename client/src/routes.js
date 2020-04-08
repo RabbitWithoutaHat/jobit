@@ -35,10 +35,10 @@ export const useRoutes = isAuthenticated => {
           <UsersListPage />
         </Route>
         <Route path="/review" exact>
-          <CompaniesListPage />
+          <ReviewsListPage />
         </Route>
         <Route path="/company" exact>
-          <ReviewsListPage />
+          <CompaniesListPage />
         </Route>
         <Route path="/" exact>
           <MainPage />

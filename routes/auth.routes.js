@@ -49,7 +49,7 @@ router.post(
         message: 'Ощибка авторизации',
       })
     }
-  }
+  },
 )
 
 router.post(
@@ -92,7 +92,7 @@ router.post(
         config.get('jwtSecret'),
         {
           expiresIn: '1h',
-        }
+        },
       )
       res.json({
         token,
@@ -103,7 +103,7 @@ router.post(
         message: 'Ошибка Авторизации',
       })
     }
-  }
+  },
 )
 
 module.exports = router

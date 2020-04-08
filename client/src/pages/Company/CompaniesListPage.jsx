@@ -1,18 +1,17 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useHttp } from '../../hooks/http.hook';
-import { AuthContext } from '../../context/AuthContext';
-import Loader from '../../components/Loader';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useHttp } from '../../hooks/http.hook'
+import { AuthContext } from '../../context/AuthContext'
+import Loader from '../../components/Loader'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -36,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
   },
   cardContent: {
     flexGrow: 1,
@@ -45,30 +44,30 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
-}));
+}))
 
 export const CompaniesListPage = () => {
-  const classes = useStyles();
-  const { token } = useContext(AuthContext);
-  const { request, loading } = useHttp();
-  const [list, setList] = useState(null);
-  const listType = useParams().type;
+  const classes = useStyles()
+  const { token } = useContext(AuthContext)
+  const { request, loading } = useHttp()
+  const [list, setList] = useState(null)
+  const listType = useParams().type
 
   const getList = useCallback(async () => {
     try {
       const fetched = await request(`/api/company`, 'GET', null, {
         Authorization: `Bearer ${token}`,
-      });
-      setList(fetched);
+      })
+      setList(fetched)
     } catch (e) {}
-  }, [token, listType, request]);
+  }, [token, listType, request])
 
   useEffect(() => {
-    getList();
-  }, [getList]);
+    getList()
+  }, [getList])
 
   if (loading) {
-    return <Loader />;
+    return <Loader />
   }
   return (
     <>
@@ -85,13 +84,15 @@ export const CompaniesListPage = () => {
                       image="https://source.unsplash.com/featured/?people"
                       title="Image title"
                     />
-                    {/* <CardContent className={classes.cardContent}>
+                    <CardContent className={classes.cardContent}>
                       <Typography gutterBottom variant="h4" component="h2">
-                        {user.nick ? user.nick : user.email.split('@')[0]}
+                        {company.name ? company.name : ''}
                       </Typography>
-                      <Typography gutterBottom variant="h6">Отзывов: {user.reviews.length}</Typography>
-                      <Typography>{user.about? user.about : ''}</Typography>
-                    </CardContent> */}
+                      <Typography gutterBottom variant="h6">
+                        Отзывов: {company.reviews.length}
+                      </Typography>
+                      <Typography>{company.description ? company.description : ''}</Typography>
+                    </CardContent>
                     <CardActions>
                       <Button size="small" color="primary">
                         Прочитать отзывы
@@ -105,5 +106,5 @@ export const CompaniesListPage = () => {
         </main>
       )}
     </>
-  );
-};
+  )
+}

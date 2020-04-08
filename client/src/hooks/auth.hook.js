@@ -12,6 +12,7 @@ export const useAuth = () => {
     setUserId(id);
     localStorage.setItem(storageName, JSON.stringify({ userId: id, token: jwtToken }));
   }, []);
+  
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
