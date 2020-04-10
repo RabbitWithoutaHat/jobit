@@ -16,6 +16,9 @@ const useStyles = makeStyles({
     minWidth: 275,
     marginTop: 20,
   },
+  marginContainer: {
+    marginTop: 25,
+  },
   title: {
     fontSize: 14,
   },
@@ -62,7 +65,7 @@ function ReviewList(props) {
 
   return (
     <>
-      <Grid container spacing={4}>
+      <Grid className={classes.marginContainer} container spacing={4}>
         {!loading && list && (
           <>
             {list.map(review => (
