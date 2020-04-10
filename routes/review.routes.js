@@ -41,8 +41,17 @@ router.post('/new', auth, async (req, res) => {
 })
 
 // update review
-router.post('/update', auth, async (req, res) => {
-  const { id, name, description, address, latLng, userId, ...rest } = req.body
+router.put('/update', auth, async (req, res) => {
+  const {
+    _id: id,
+    name,
+    description,
+    address,
+    latLng,
+    userId,
+    companyId,
+    ...rest
+  } = req.body
   try {
     let review
 
@@ -60,7 +69,7 @@ router.post('/update', auth, async (req, res) => {
     }
 
     await Company.findOneAndUpdate(
-      { _id: id },
+      { _id: companyId },
       { $set: { name, description, address, latLng, reviews: [review._id] } },
     )
 
@@ -82,8 +91,13 @@ router.post('/update', auth, async (req, res) => {
 router.get('/:id', auth, async (req, res) => {
   try {
     const review = await Review.findById(req.params.id)
-    res.json(review)
+    const company = await Company.findOne({
+      reviews: req.params.id,
+    })
+    res.json({ review, company })
   } catch (error) {
+    console.log(error)
+
     res.status(500).json({
       message: 'Не удалось получить отзыв',
     })

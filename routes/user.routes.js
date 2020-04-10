@@ -9,13 +9,17 @@ const router = Router()
 // update user
 router.post('/', async (req, res) => {
   const { id, password, ...rest } = req.body
-  const hashedPassword = await bcrypt.hash(password, 12)
-
   try {
-    const user = await User.findOneAndUpdate(
-      { _id: id },
-      { $set: { ...rest, password: hashedPassword } },
-    )
+    let user
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 12)
+      user = await User.findOneAndUpdate(
+        { _id: id },
+        { $set: { ...rest, password: hashedPassword } },
+      )
+    } else {
+      user = await User.findOneAndUpdate({ _id: id }, { $set: { ...rest } })
+    }
 
     res.json(JSON.stringify(user))
   } catch (error) {

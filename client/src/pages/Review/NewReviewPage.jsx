@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { NewReviewRating } from '../../components/NewReviewRating'
 import { NewReviewCheckbox } from '../../components/NewReviewCheckbox'
 import { useHttp } from '../../hooks/http.hook'
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     boxSizing: 'border-box',
   },
   submit: {
-    margin: theme.spacing(3, 0, 15),
+    margin: theme.spacing(3, 0, 5),
   },
   mainGrid: {
     justifyContent: 'center',
@@ -52,9 +52,6 @@ const useStyles = makeStyles(theme => ({
     margin: 'auto',
     backgroundColor: theme.palette.secondary.main,
   },
-  avatarGrid: {
-    marginTop: 40,
-  },
   searchCompanyWrapper: { position: 'relative' },
   autocompleteDropdownContainer: {
     width: '98%',
@@ -74,14 +71,17 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const NewReviewPage = () => {
+export const NewReviewPage = props => {
+  const reviewId = (props.match && props.match.params.id) || undefined
   const classes = useStyles()
   const { request, loading } = useHttp()
   const [form, setForm] = useState({})
   const [companies, setCompanies] = useState()
-  const [showCompanySearchDropdown, setShowCompanySearchDropdown] = useState(false)
+  const [showCompanySearchDropdown, setShowCompanySearchDropdown] = useState(
+    false,
+  )
   const { clearError, error, setError } = useHttp()
-  const { token } = useContext(AuthContext)
+  const { token, userId } = useContext(AuthContext)
 
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.value })
@@ -98,7 +98,7 @@ export const NewReviewPage = () => {
         {
           Authorization: `Bearer ${token}`,
         },
-        false
+        false,
       )
       console.log(data)
 
@@ -109,20 +109,21 @@ export const NewReviewPage = () => {
   }
 
   const submitHandler = async () => {
-    console.log('submitHandler -> form', form)
+    const path = reviewId ? '/api/review/update' : '/api/review/new'
+    const method = reviewId ? 'PUT' : 'POST'
     try {
       const data = await request(
-        '/api/review',
-        'POST',
-        { ...form },
-        { Authorization: `Bearer ${token}` }
+        path,
+        method,
+        { ...form, userId },
+        { Authorization: `Bearer ${token}` },
       )
-      console.log(data)
       setForm({})
     } catch (e) {
       setError(e.message)
     }
   }
+
   const onSelectCompany = id => {
     const company = companies.find(company => company._id === id)
     console.log(company)
@@ -130,12 +131,30 @@ export const NewReviewPage = () => {
     setShowCompanySearchDropdown(false)
   }
 
+  const getReview = useCallback(async () => {
+    if (reviewId) {
+      try {
+        const fetched = await request(`/api/review/${reviewId}`, 'GET', null, {
+          Authorization: `Bearer ${token}`,
+        })
+        const { _id, ...rest } = fetched.company
+        setForm({ ...fetched.review, companyId: _id, ...rest })
+        console.log('log->: getReview -> fetched.company', fetched)
+      } catch (e) {}
+    }
+  }, [token, request, reviewId])
+
+  useEffect(() => {
+    getReview()
+  }, [getReview])
+
   if (loading) {
     return <Loader />
   }
+  console.log('log->: form', form)
 
   return (
-    <div className={classes.root}>
+    <>
       <Grid className={classes.mainGrid} container spacing={3}>
         <form className={classes.form}>
           <Grid container spacing={2}>
@@ -148,6 +167,7 @@ export const NewReviewPage = () => {
                 variant="outlined"
                 required
                 fullWidth
+                value={form.companyName}
                 id="name"
                 label="Название компании"
                 autoFocus
@@ -175,6 +195,7 @@ export const NewReviewPage = () => {
                 variant="outlined"
                 required
                 fullWidth
+                value={form.position}
                 id="position"
                 label="Должность"
                 name="position"
@@ -191,6 +212,7 @@ export const NewReviewPage = () => {
                 name="description"
                 label="Описание компании"
                 id="description"
+                value={form.description}
                 onChange={changeHandler}
               />
             </Grid>
@@ -211,6 +233,7 @@ export const NewReviewPage = () => {
                 name="review"
                 label="Отзыв"
                 id="review"
+                value={form.review}
                 onChange={changeHandler}
               />
             </Grid>
@@ -224,6 +247,7 @@ export const NewReviewPage = () => {
                 name="questions"
                 label="Вопросы и задачи на собеседовании"
                 id="questions"
+                value={form.questions}
                 onChange={changeHandler}
               />
             </Grid>
@@ -253,6 +277,6 @@ export const NewReviewPage = () => {
           }}
         />
       </Grid>
-    </div>
+    </>
   )
 }

@@ -11,7 +11,6 @@ import { AuthContext } from '../context/AuthContext'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    marginTop: 40,
   },
   paper: {
     padding: theme.spacing(2),
@@ -31,7 +30,6 @@ const useStyles = makeStyles(theme => ({
   profileNicName: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: 40,
   },
   form: {
     width: '100%',

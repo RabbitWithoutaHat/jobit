@@ -17,7 +17,7 @@ export const NewReviewCheckbox = ({ form, setForm }) => {
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.checked })
   }
-
+  
   return (
     <>
       <Box item md={6} lg={3} className={classes.checkboxBox}>
@@ -29,6 +29,7 @@ export const NewReviewCheckbox = ({ form, setForm }) => {
                 checked={form.online}
                 onChange={changeHandler}
                 name="online"
+                
               />
             }
             label="Онлайн"
@@ -40,6 +41,7 @@ export const NewReviewCheckbox = ({ form, setForm }) => {
                 onChange={changeHandler}
                 name="offline"
                 color="primary"
+                defaultChecked={form.offline}
               />
             }
             label="Офлайн"

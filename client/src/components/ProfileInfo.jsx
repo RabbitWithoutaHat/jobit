@@ -10,9 +10,26 @@ import Typography from '@material-ui/core/Typography'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    marginTop: 40,
     fontSize: 17,
+    color: 'white',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      display: 'block',
+      height: 250,
+      zIndex: -5,
+      marginTop: -40,
+      backgroundColor: '#76767661',
+      width: '100vw',
+      left: 0,
+    },
   },
+  // background: {
+  //   position: 'absolute',
+  //   backgroundColor: 'gray',
+  //   width: '100vw',
+  //   left: 0,
+  // },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
@@ -29,7 +46,6 @@ const useStyles = makeStyles(theme => ({
   profileNicName: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: 40,
   },
   column: {
     display: 'flex',
@@ -77,7 +93,7 @@ export default function ProfileInfo({ setIsEdit, user, setUser }) {
 
   return (
     <div className={classes.root}>
-      <Grid container>
+      <Grid className={classes.container} container>
         <Grid item xs={12} sm={3} lg={2} className={classes.avatarGrid}>
           <Avatar
             className={classes.avatar}
