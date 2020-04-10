@@ -1,13 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { AppContainer } from './components/AppContainer'
+import { AppContainer } from './common/AppContainer'
 import { useRoutes } from './routes'
 import { useAuth } from './hooks/auth.hook'
 import { useLocation } from './hooks/location.hook '
 import { AuthContext } from './context/AuthContext'
 import { LocationContext } from './context/LocationContext'
-import NavBar from './components/NavBar'
-import Loader from './components/Loader'
+import NavBar from './common/NavBar'
+import Loader from './common/Loader'
 
 function App() {
   const { token, login, logout, userId, ready } = useAuth()

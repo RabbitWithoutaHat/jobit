@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
-import { NewReviewRating } from '../../components/NewReviewRating'
-import { NewReviewCheckbox } from '../../components/NewReviewCheckbox'
+import { NewReviewRating } from './components/NewReviewRating'
+import { NewReviewCheckbox } from './components/NewReviewCheckbox'
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
 import { makeStyles } from '@material-ui/core/styles'
@@ -8,10 +8,10 @@ import Grid from '@material-ui/core/Grid'
 import { TextField } from '@material-ui/core'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
-import { LocationSearchInput } from '../../components/LocationSearchInput'
+import { LocationSearchInput } from './components/LocationSearchInput'
 import Snackbar from '@material-ui/core/Snackbar'
 
-import Loader from '../../components/Loader'
+import Loader from '../../common/Loader'
 
 const useStyles = makeStyles(theme => ({
   root: {

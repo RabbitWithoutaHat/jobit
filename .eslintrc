@@ -11,7 +11,7 @@
     "semi": 0,
     "object-curly-newline": "off",
     "no-underscore-dangle": "off",
-    "consistent-return": "off"
+    "no-unused-vars": "warn"
   },
   "plugins": ["prettier"],
   "env": { "browser": true, "node": true }
