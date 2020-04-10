@@ -40,7 +40,6 @@ export const LocationSearchInput = ({ form, setForm, setError }) => {
         color: '#0277bd',
       }
     : ''
-  console.log('LocationSearchInput -> focusedLabel', focusedLabel)
   const classes = useStyles(focusedLabel)
 
   const changeHandler = event => {

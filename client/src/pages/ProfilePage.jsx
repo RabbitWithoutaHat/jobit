@@ -1,23 +1,27 @@
 import React, { useContext, useState } from 'react'
 import { useHttp } from '../hooks/http.hook'
-import { AuthContext } from '../context/AuthContext'
 import Loader from '../components/Loader'
 import EditProfileInfo from '../components/EditProfileInfo'
 import ProfileInfo from '../components/ProfileInfo'
 import ReviewList from '../components/ReviewList'
 
 export const ProfilePage = () => {
-  const { request, loading } = useHttp()
+  const { loading } = useHttp()
   const [user, setUser] = useState({})
   const [isEdit, setIsEdit] = useState(false)
-
   if (loading) {
     return <Loader />
   }
 
   return (
-  <>{isEdit ? <EditProfileInfo user={user} setIsEdit={setIsEdit}/>
-  : <ProfileInfo setUser={setUser} user={user} setIsEdit={setIsEdit} />}
-    <ReviewList />
-  </>)
+    <>
+      {isEdit ? (
+        <EditProfileInfo user={user} setIsEdit={setIsEdit} />
+      ) : (
+        <ProfileInfo setUser={setUser} user={user} setIsEdit={setIsEdit} />
+      )}
+
+      <ReviewList />
+    </>
+  )
 }
