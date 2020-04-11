@@ -24,12 +24,6 @@ const useStyles = makeStyles(theme => ({
       left: 0,
     },
   },
-  // background: {
-  //   position: 'absolute',
-  //   backgroundColor: 'gray',
-  //   width: '100vw',
-  //   left: 0,
-  // },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
@@ -60,7 +54,7 @@ const useStyles = makeStyles(theme => ({
     height: 30,
     marginTop: 62,
   },
-  headeProfileName: {
+  textItem: {
     height: 28,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -102,28 +96,28 @@ export default function ProfileInfo({ setIsEdit, user, setUser }) {
           />
         </Grid>
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.login || null}
           </Typography>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.email || null}
           </Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.location || null}
           </Typography>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.phone || null}
           </Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.gitUrl || null}
           </Typography>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.siteUrl || null}
           </Typography>
         </Grid>
