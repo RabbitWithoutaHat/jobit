@@ -5,8 +5,6 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField } from '@material-ui/core'
-import { InputLabel } from '@material-ui/core'
-import { FilledInput } from '@material-ui/core'
 const useStyles = makeStyles(theme => ({
   inputWrapper: {},
   locationInput: {

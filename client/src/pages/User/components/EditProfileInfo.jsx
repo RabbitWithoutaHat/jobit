@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
@@ -50,7 +50,7 @@ export default function EditProfileInfo({ setIsEdit, user }) {
   const classes = useStyles()
   const [form, setForm] = useState({})
   const { token, userId } = useContext(AuthContext)
-  const { request, loading } = useHttp()
+  const { request } = useHttp()
 
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.value })
@@ -61,7 +61,7 @@ export default function EditProfileInfo({ setIsEdit, user }) {
     setIsEdit(false)
   }
 
-  const onClickEditProfile = async (event) => {
+  const onClickEditProfile = async event => {
     event.preventDefault()
     try {
       await request(
@@ -70,7 +70,7 @@ export default function EditProfileInfo({ setIsEdit, user }) {
         { ...form, id: userId },
         {
           Authorization: `Bearer ${token}`,
-        }
+        },
       )
     } catch (e) {}
     setIsEdit(false)

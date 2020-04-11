@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useHttp } from '../../hooks/http.hook'
 import Loader from '../../common/Loader'
 import EditProfileInfo from './components/EditProfileInfo'
 import ProfileInfo from './components/ProfileInfo'
-import ReviewList from '../Review/components/ReviewList'
+import { ReviewList } from '../Review/components/ReviewList'
 
 export const ProfilePage = () => {
   const { loading } = useHttp()

@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
 import Loader from '../../common/Loader'
@@ -51,7 +50,6 @@ export const CompaniesListPage = () => {
   const { token } = useContext(AuthContext)
   const { request, loading } = useHttp()
   const [list, setList] = useState(null)
-  const listType = useParams().type
 
   const getList = useCallback(async () => {
     try {
@@ -60,7 +58,7 @@ export const CompaniesListPage = () => {
       })
       setList(fetched)
     } catch (e) {}
-  }, [token, listType, request])
+  }, [token, request])
 
   useEffect(() => {
     getList()
@@ -91,7 +89,9 @@ export const CompaniesListPage = () => {
                       <Typography gutterBottom variant="h6">
                         Отзывов: {company.reviews.length}
                       </Typography>
-                      <Typography>{company.description ? company.description : ''}</Typography>
+                      <Typography>
+                        {company.description ? company.description : ''}
+                      </Typography>
                     </CardContent>
                     <CardActions>
                       <Button size="small" color="primary">
