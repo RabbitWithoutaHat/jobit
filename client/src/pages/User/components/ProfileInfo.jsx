@@ -24,12 +24,6 @@ const useStyles = makeStyles(theme => ({
       left: 0,
     },
   },
-  // background: {
-  //   position: 'absolute',
-  //   backgroundColor: 'gray',
-  //   width: '100vw',
-  //   left: 0,
-  // },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
@@ -56,11 +50,10 @@ const useStyles = makeStyles(theme => ({
   button: {
     display: 'flex',
     alignItems: 'end',
-    marginTop: 40,
     height: 30,
     marginTop: 62,
   },
-  headeProfileName: {
+  textItem: {
     height: 28,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -72,7 +65,7 @@ const useStyles = makeStyles(theme => ({
 export default function ProfileInfo({ setIsEdit, user, setUser }) {
   const classes = useStyles()
   const { token, userId } = useContext(AuthContext)
-  const { request, loading } = useHttp()
+  const { request } = useHttp()
 
   const onClickEditProfile = () => {
     setIsEdit(true)
@@ -85,7 +78,7 @@ export default function ProfileInfo({ setIsEdit, user, setUser }) {
       })
       setUser(fetched)
     } catch (e) {}
-  }, [token, request])
+  }, [token, request, setUser, userId])
 
   useEffect(() => {
     getUser()
@@ -102,28 +95,28 @@ export default function ProfileInfo({ setIsEdit, user, setUser }) {
           />
         </Grid>
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.login || null}
           </Typography>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.email || null}
           </Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.location || null}
           </Typography>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.phone || null}
           </Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.gitUrl || null}
           </Typography>
-          <Typography className={classes.headeProfileName}>
+          <Typography className={classes.textItem}>
             {user.siteUrl || null}
           </Typography>
         </Grid>

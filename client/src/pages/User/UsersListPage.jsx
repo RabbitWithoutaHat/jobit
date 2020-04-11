@@ -1,18 +1,16 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useHttp } from '../../hooks/http.hook';
-import { AuthContext } from '../../context/AuthContext';
-import Loader from '../../common/Loader';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useHttp } from '../../hooks/http.hook'
+import { AuthContext } from '../../context/AuthContext'
+import Loader from '../../common/Loader'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -36,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
   },
   cardContent: {
     flexGrow: 1,
@@ -45,30 +43,29 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
-}));
+}))
 
 export const UsersListPage = () => {
-  const classes = useStyles();
-  const { token } = useContext(AuthContext);
-  const { request, loading } = useHttp();
-  const [list, setList] = useState(null);
-  const listType = useParams().type;
+  const classes = useStyles()
+  const { token } = useContext(AuthContext)
+  const { request, loading } = useHttp()
+  const [list, setList] = useState(null)
 
   const getList = useCallback(async () => {
     try {
       const fetched = await request(`/api/user`, 'GET', null, {
         Authorization: `Bearer ${token}`,
-      });
-      setList(fetched);
+      })
+      setList(fetched)
     } catch (e) {}
-  }, [token, listType, request]);
+  }, [token, request])
 
   useEffect(() => {
-    getList();
-  }, [getList]);
+    getList()
+  }, [getList])
 
   if (loading) {
-    return <Loader />;
+    return <Loader />
   }
 
   return (
@@ -90,8 +87,10 @@ export const UsersListPage = () => {
                       <Typography gutterBottom variant="h4" component="h2">
                         {user.nick ? user.nick : user.email.split('@')[0]}
                       </Typography>
-                      <Typography gutterBottom variant="h6">Отзывов: {user.reviews.length}</Typography>
-                      <Typography>{user.about? user.about : ''}</Typography>
+                      <Typography gutterBottom variant="h6">
+                        Отзывов: {user.reviews.length}
+                      </Typography>
+                      <Typography>{user.about ? user.about : ''}</Typography>
                     </CardContent>
                     <CardActions>
                       <Button size="small" color="primary">
@@ -106,5 +105,5 @@ export const UsersListPage = () => {
         </main>
       )}
     </>
-  );
-};
+  )
+}

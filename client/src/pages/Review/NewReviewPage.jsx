@@ -10,6 +10,7 @@ import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { LocationSearchInput } from './components/LocationSearchInput'
 import Snackbar from '@material-ui/core/Snackbar'
+import { useParams } from 'react-router-dom'
 
 import Loader from '../../common/Loader'
 
@@ -71,8 +72,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const NewReviewPage = props => {
-  const reviewId = (props.match && props.match.params.id) || undefined
+export const NewReviewPage = () => {
+  const reviewId = useParams().id
   const classes = useStyles()
   const { request, loading } = useHttp()
   const [form, setForm] = useState({})
