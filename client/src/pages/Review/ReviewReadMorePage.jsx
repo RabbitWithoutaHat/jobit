@@ -68,8 +68,8 @@ export const ReviewReadMorePage = props => {
   const classes = useStyles()
   const { request, loading } = useHttp()
   const [form, setForm] = useState({})
-  const { clearError, error, setError } = useHttp()
-  const { token, userId } = useContext(AuthContext)
+  const { clearError, error } = useHttp()
+  const { token } = useContext(AuthContext)
 
   const getReview = useCallback(async () => {
     if (reviewId) {
@@ -105,11 +105,10 @@ export const ReviewReadMorePage = props => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-          <Typography> {form.position || null} </Typography>
-            
+            <Typography> {form.position || null} </Typography>
           </Grid>
           <Grid item xs={12}>
-          <Typography> {form.description || null} </Typography>
+            <Typography> {form.description || null} </Typography>
           </Grid>
 
           <Grid className={classes.mapContainer} item xs={12}>
@@ -117,7 +116,7 @@ export const ReviewReadMorePage = props => {
           </Grid>
 
           <Grid item xs={12}>
-          <Typography> {form.review || null} </Typography>
+            <Typography> {form.review || null} </Typography>
           </Grid>
 
           <Grid item xs={12}>

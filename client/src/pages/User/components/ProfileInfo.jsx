@@ -56,7 +56,6 @@ const useStyles = makeStyles(theme => ({
   button: {
     display: 'flex',
     alignItems: 'end',
-    marginTop: 40,
     height: 30,
     marginTop: 62,
   },
@@ -72,7 +71,7 @@ const useStyles = makeStyles(theme => ({
 export default function ProfileInfo({ setIsEdit, user, setUser }) {
   const classes = useStyles()
   const { token, userId } = useContext(AuthContext)
-  const { request, loading } = useHttp()
+  const { request } = useHttp()
 
   const onClickEditProfile = () => {
     setIsEdit(true)
@@ -85,7 +84,7 @@ export default function ProfileInfo({ setIsEdit, user, setUser }) {
       })
       setUser(fetched)
     } catch (e) {}
-  }, [token, request])
+  }, [token, request, setUser, userId])
 
   useEffect(() => {
     getUser()
