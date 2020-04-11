@@ -1,14 +1,14 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
+import { useParams } from 'react-router-dom'
 import { NewReviewRating } from './components/NewReviewRating'
 import { NewReviewCheckbox } from './components/NewReviewCheckbox'
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import { TextField } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
+import Divider from '@material-ui/core/Divider'
 
 import Loader from '../../common/Loader'
 
@@ -16,9 +16,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     boxSizing: 'border-box',
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 15),
   },
   mainGrid: {
     justifyContent: 'center',
@@ -28,43 +25,24 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     marginBottom: theme.spacing(4),
   },
-  mapContainer: {
-    marginBottom: theme.spacing(3),
-  },
   ratingCheckboxContainer: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  map: {
-    height: 400,
-    width: '100%',
+  divider: {
+    maxWidth: 200,
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+  textItemTitle: {
+    color: '#6f6f6f',
   },
-  searchCompanyWrapper: { position: 'relative' },
-  autocompleteDropdownContainer: {
-    width: '98%',
-    position: 'absolute',
-    backgroundColor: 'white',
-    fontSize: '1rem',
-    height: 120,
-    zIndex: 5,
-    borderRadius: '5px',
-    padding: '5px 10px',
-  },
-  autocompleteDropdownItem: {
-    cursor: 'pointer',
-    fontSize: '1rem',
-    lineHeight: '1.5rem',
+  textItem: {
+    marginBottom: 15,
   },
 }))
 
 export const ReviewReadMorePage = props => {
-  const reviewId = (props.match && props.match.params.id) || undefined
+  const reviewId = useParams().id
   const classes = useStyles()
   const { request, loading } = useHttp()
   const [form, setForm] = useState({})
@@ -94,60 +72,75 @@ export const ReviewReadMorePage = props => {
   console.log('log->: form.companyName', form)
   return (
     <>
-      <Grid className={classes.mainGrid} container spacing={3}>
+      <Grid className={classes.mainGrid} container>
         <Grid container spacing={2}>
           <Grid className={classes.titleGrid} item xs={12}>
             <Typography variant="h4"> Отзыв</Typography>
           </Grid>
 
-          <Grid item xs={12} sm={6} className={classes.searchCompanyWrapper}>
-            <Typography> Компания: {form.companyName || null} </Typography>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1" className={classes.textItemTitle}>
+              Компания:
+            </Typography>
+            <Divider className={classes.divider} />
+            <Typography variant="h4" className={classes.textItem}>
+              {form.companyName || null}
+            </Typography>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Typography> {form.position || null} </Typography>
+            <Typography variant="subtitle1" className={classes.textItemTitle}>
+              Должность:
+            </Typography>
+            <Divider className={classes.divider} />
+            <Typography variant="h4" className={classes.textItem}>
+              {form.position || null}
+            </Typography>
           </Grid>
-          <Grid item xs={12}>
-            <Typography> {form.description || null} </Typography>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1" className={classes.textItemTitle}>
+              Описание компании:
+            </Typography>
+            <Divider className={classes.divider} />
+            <Typography variant="h6" className={classes.textItem}>
+              {form.description || null}
+            </Typography>
           </Grid>
 
-          <Grid className={classes.mapContainer} item xs={12}>
-            <Typography> {form.address || null} </Typography>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1" className={classes.textItemTitle}>
+              Адрес:
+            </Typography>
+            <Divider className={classes.divider} />
+            <Typography variant="h6" className={classes.textItem}>
+              {form.address || null}
+            </Typography>
           </Grid>
 
           <Grid item xs={12}>
-            <Typography> {form.review || null} </Typography>
+            <Typography variant="subtitle1" className={classes.textItemTitle}>
+              Отзыв:
+            </Typography>
+            <Divider className={classes.divider} />
+            <Typography variant="h6" className={classes.textItem}>
+              {form.review || null}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1" className={classes.textItemTitle}>
+              Вопросы и задачи на собеседовании:
+            </Typography>
+            <Divider className={classes.divider} />
+            <Typography variant="h6" className={classes.textItem}>
+              {form.questions || null}
+            </Typography>
           </Grid>
 
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              multiline
-              rows={4}
-              name="questions"
-              label="Вопросы и задачи на собеседовании"
-              id="questions"
-              value={form.questions}
-            />
-          </Grid>
           <Grid className={classes.ratingCheckboxContainer} item xs={12}>
             <NewReviewRating form={form} setForm={setForm} />
             <NewReviewCheckbox form={form} setForm={setForm} />
           </Grid>
         </Grid>
-
-        <Button
-          // onClick={submitHandler}
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-        >
-          Отправить
-        </Button>
         <Snackbar
           message={error}
           autoHideDuration={4000}
