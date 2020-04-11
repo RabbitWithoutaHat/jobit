@@ -11,6 +11,18 @@ import { AuthContext } from '../../../context/AuthContext'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    fontSize: 17,
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      display: 'block',
+      height: 250,
+      zIndex: -5,
+      marginTop: -40,
+      backgroundColor: '#76767661',
+      width: '100vw',
+      left: 0,
+    },
   },
   paper: {
     padding: theme.spacing(2),
@@ -21,10 +33,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: 40,
   },
   avatar: {
-    display: 'flex',
     width: theme.spacing(25),
     height: theme.spacing(25),
-    margin: 'auto',
     backgroundColor: theme.palette.secondary.main,
   },
   profileNicName: {
@@ -38,11 +48,15 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    padding: '0 12px',
   },
   button: {
     padding: 0,
     height: 28,
     marginTop: 20,
+  },
+  input: {
+    color: 'white',
   },
 }))
 
@@ -79,7 +93,7 @@ export default function EditProfileInfo({ setIsEdit, user }) {
   return (
     <div className={classes.root}>
       <form className={classes.form} noValidate>
-        <Grid container spacing={3}>
+        <Grid container >
           <Grid item xs={12} sm={3} lg={2} className={classes.avatarGrid}>
             <Tooltip title="Загрузить фото">
               <Avatar
@@ -156,6 +170,7 @@ export default function EditProfileInfo({ setIsEdit, user }) {
               type="submit"
               color="primary"
               className={classes.button}
+
             >
               Отмена
             </Button>
