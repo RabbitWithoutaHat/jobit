@@ -91,7 +91,7 @@ router.post(
         },
         config.get('jwtSecret'),
         {
-          expiresIn: '1h',
+          expiresIn: '10d',
         },
       )
       res.json({

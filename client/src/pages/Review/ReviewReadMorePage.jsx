@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { NewReviewRating } from './components/NewReviewRating'
-import { NewReviewCheckbox } from './components/NewReviewCheckbox'
+import { ReviewCheckbox } from './components/ReviewCheckbox'
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
 import { makeStyles } from '@material-ui/core/styles'
@@ -134,7 +134,7 @@ export const ReviewReadMorePage = props => {
           </Grid>
           <Grid className={classes.ratingCheckboxContainer} item xs={12}>
             <NewReviewRating form={form} setForm={setForm} />
-            <NewReviewCheckbox form={form} setForm={setForm} />
+            <ReviewCheckbox form={form} setForm={setForm} />
           </Grid>
         </Grid>
 
