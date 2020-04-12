@@ -8,16 +8,16 @@ import Box from '@material-ui/core/Box'
 
 const useStyles = makeStyles(theme => ({
   checkboxBox: { width: 300, margin: '10px 0', textAlign: 'center' },
-  checkboxGroup: { display: 'flex', justifyContent: 'center'}
+  checkboxGroup: { display: 'flex', justifyContent: 'center' },
 }))
 
-export const NewReviewCheckbox = ({ form, setForm }) => {
+export const NewReviewCheckbox = ({ form, setForm, edit }) => {
   const classes = useStyles()
 
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.checked })
   }
-  
+
   return (
     <>
       <Box item md={6} lg={3} className={classes.checkboxBox}>
@@ -25,24 +25,34 @@ export const NewReviewCheckbox = ({ form, setForm }) => {
         <FormGroup row className={classes.checkboxGroup}>
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.online}
-                onChange={changeHandler}
-                name="online"
-                
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.online}
+                  onChange={changeHandler}
+                  name="online"
+                />
+              ) : (
+                <Checkbox checked={!!form.online} name="online" />
+              )
             }
             label="Онлайн"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.offline}
-                onChange={changeHandler}
-                name="offline"
-                color="primary"
-                defaultChecked={form.offline}
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.offline}
+                  onChange={changeHandler}
+                  name="offline"
+                  color="primary"
+                />
+              ) : (
+                <Checkbox
+                  checked={!!form.offline}
+                  name="offline"
+                  color="primary"
+                />
+              )
             }
             label="Офлайн"
           />
@@ -53,22 +63,34 @@ export const NewReviewCheckbox = ({ form, setForm }) => {
         <FormGroup row className={classes.checkboxGroup}>
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.product}
-                onChange={changeHandler}
-                name="product"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.product}
+                  onChange={changeHandler}
+                  name="product"
+                />
+              ) : (
+                <Checkbox checked={!!form.product} name="product" />
+              )
             }
             label="Продуктовая"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.outsourcing}
-                onChange={changeHandler}
-                name="outsourcing"
-                color="primary"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.outsourcing}
+                  onChange={changeHandler}
+                  name="outsourcing"
+                  color="primary"
+                />
+              ) : (
+                <Checkbox
+                  checked={!!form.outsourcing}
+                  name="outsourcing"
+                  color="primary"
+                />
+              )
             }
             label="Аутсорсинг"
           />
@@ -79,22 +101,34 @@ export const NewReviewCheckbox = ({ form, setForm }) => {
         <FormGroup row className={classes.checkboxGroup}>
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.remote}
-                onChange={changeHandler}
-                name="remote"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.remote}
+                  onChange={changeHandler}
+                  name="remote"
+                />
+              ) : (
+                <Checkbox checked={!!form.remote} name="remote" />
+              )
             }
             label="Удаленная"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.office}
-                onChange={changeHandler}
-                name="office"
-                color="primary"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.office}
+                  onChange={changeHandler}
+                  name="office"
+                  color="primary"
+                />
+              ) : (
+                <Checkbox
+                  checked={!!form.office}
+                  name="office"
+                  color="primary"
+                />
+              )
             }
             label="В офисе"
           />
@@ -105,106 +139,154 @@ export const NewReviewCheckbox = ({ form, setForm }) => {
         <FormGroup row className={classes.checkboxGroup}>
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.english}
-                onChange={changeHandler}
-                name="english"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.english}
+                  onChange={changeHandler}
+                  name="english"
+                />
+              ) : (
+                <Checkbox checked={!!form.english} name="english" />
+              )
             }
             label="Английский"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.lunch}
-                onChange={changeHandler}
-                name="lunch"
-                color="primary"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.lunch}
+                  onChange={changeHandler}
+                  name="lunch"
+                  color="primary"
+                />
+              ) : (
+                <Checkbox checked={!!form.lunch} name="lunch" color="primary" />
+              )
             }
             label="Обеды"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.transit}
-                onChange={changeHandler}
-                name="transit"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.transit}
+                  onChange={changeHandler}
+                  name="transit"
+                />
+              ) : (
+                <Checkbox checked={!!form.transit} name="transit" />
+              )
             }
             label="Проезд"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.calls}
-                onChange={changeHandler}
-                name="calls"
-                color="primary"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.calls}
+                  onChange={changeHandler}
+                  name="calls"
+                  color="primary"
+                />
+              ) : (
+                <Checkbox checked={!!form.calls} name="calls" color="primary" />
+              )
             }
             label="Связь"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.premium}
-                onChange={changeHandler}
-                name="premium"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.premium}
+                  onChange={changeHandler}
+                  name="premium"
+                />
+              ) : (
+                <Checkbox checked={!!form.premium} name="premium" />
+              )
             }
             label="Премия"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.sport}
-                onChange={changeHandler}
-                name="sport"
-                color="primary"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.sport}
+                  onChange={changeHandler}
+                  name="sport"
+                  color="primary"
+                />
+              ) : (
+                <Checkbox checked={!!form.sport} name="sport" color="primary" />
+              )
             }
             label="Спорт"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.dms}
-                onChange={changeHandler}
-                name="dms"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.dms}
+                  onChange={changeHandler}
+                  name="dms"
+                />
+              ) : (
+                <Checkbox checked={!!form.dms} name="dms" />
+              )
             }
             label="ДМС"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.schedule}
-                onChange={changeHandler}
-                name="schedule"
-                color="primary"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.schedule}
+                  onChange={changeHandler}
+                  name="schedule"
+                  color="primary"
+                />
+              ) : (
+                <Checkbox
+                  checked={!!form.schedule}
+                  name="schedule"
+                  color="primary"
+                />
+              )
             }
             label="Гибкий график"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.training}
-                onChange={changeHandler}
-                name="training"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.training}
+                  onChange={changeHandler}
+                  name="training"
+                />
+              ) : (
+                <Checkbox checked={!!form.training} name="training" />
+              )
             }
             label="Тренинги"
           />
           <FormControlLabel
             control={
-              <Checkbox
-                checked={form.relocation}
-                onChange={changeHandler}
-                name="relocation"
-                color="primary"
-              />
+              edit ? (
+                <Checkbox
+                  checked={!!form.relocation}
+                  onChange={changeHandler}
+                  name="relocation"
+                  color="primary"
+                />
+              ) : (
+                <Checkbox
+                  checked={!!form.relocation}
+                  name="relocation"
+                  color="primary"
+                />
+              )
             }
             label="Релокация"
           />

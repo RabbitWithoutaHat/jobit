@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
+
 import { NewReviewRating } from './components/NewReviewRating'
 import { NewReviewCheckbox } from './components/NewReviewCheckbox'
 import { useHttp } from '../../hooks/http.hook'
@@ -9,9 +10,10 @@ import { TextField } from '@material-ui/core'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
-import { useParams } from 'react-router-dom'
 import LocationInputMap from './components/LocationInputMap'
 import Autocomplete from '@material-ui/lab/Autocomplete'
+import { useParams, useHistory } from 'react-router-dom'
+
 
 import Loader from '../../common/Loader'
 
@@ -44,7 +46,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const NewReviewPage = () => {
+export const NewReviewPage = ({ edit }) => {
+  const history = useHistory()
   const reviewId = useParams().id
   const classes = useStyles()
   const { request, loading } = useHttp()
@@ -71,13 +74,15 @@ export const NewReviewPage = () => {
         },
         false,
       )
+
       setCompanies(data.companies)
     } catch (e) {
       setError(e.message)
     }
   }
 
-  const submitHandler = async () => {
+  const submitHandler = async (event) => {
+    event.preventDefault()
     const path = reviewId ? '/api/review/update' : '/api/review/new'
     const method = reviewId ? 'PUT' : 'POST'
     try {
@@ -87,7 +92,7 @@ export const NewReviewPage = () => {
         { ...form, userId },
         { Authorization: `Bearer ${token}` },
       )
-      setForm({})
+      history.push(`/review/${reviewId || data.id}`)
     } catch (e) {
       setError(e.message)
     }
@@ -120,7 +125,6 @@ export const NewReviewPage = () => {
   if (loading) {
     return <Loader />
   }
-  console.log('NewReviewPage -> form', form.companyName)
 
   return (
     <>
@@ -220,8 +224,8 @@ export const NewReviewPage = () => {
               />
             </Grid>
             <Grid className={classes.ratingCheckboxContainer} item xs={12}>
-              <NewReviewRating form={form} setForm={setForm} />
-              <NewReviewCheckbox form={form} setForm={setForm} />
+              <NewReviewRating edit={edit} form={form} setForm={setForm} />
+              <NewReviewCheckbox edit={edit} form={form} setForm={setForm} />
             </Grid>
           </Grid>
 
