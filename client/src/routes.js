@@ -9,7 +9,7 @@ import { UsersListPage } from './pages/User/UsersListPage'
 import { ReviewsListPage } from './pages/Review/ReviewsListPage'
 import { NewReviewPage } from './pages/Review/NewReviewPage'
 import AuthPage from './pages/AuthPage'
-import {ReviewReadMorePage} from './pages/Review/ReviewReadMorePage'
+import { ReviewReadMorePage } from './pages/Review/ReviewReadMorePage'
 
 export const useRoutes = isAuthenticated => {
   console.log('isAuthenticated', isAuthenticated)
@@ -17,7 +17,7 @@ export const useRoutes = isAuthenticated => {
     return (
       <Switch>
         <Route path="/review/new" exact>
-          <NewReviewPage />
+          <NewReviewPage edit={true} />
         </Route>
         <Route path="/user/:id" exact>
           <UserPage />
@@ -25,7 +25,9 @@ export const useRoutes = isAuthenticated => {
         <Route path="/company/:id" exact>
           <CompanyPage />
         </Route>
-        <Route path="/review/edit/:id" component={NewReviewPage} exact />
+        <Route path="/review/edit/:id" exact>
+          <NewReviewPage edit={true} />
+        </Route>
         <Route path="/review/:id" component={ReviewReadMorePage} exact />
         <Route path="/profile" exact>
           <ProfilePage />

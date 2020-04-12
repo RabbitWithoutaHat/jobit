@@ -32,10 +32,10 @@ const useStyles = makeStyles({
   },
 })
 
-export function ReviewList() {
+export function ReviewList({ isMainPage }) {
   const classes = useStyles()
   const history = useHistory()
-  const { token } = useContext(AuthContext)
+  const { token, userId } = useContext(AuthContext)
   const { request, loading } = useHttp()
   const [list, setList] = useState(null)
 
@@ -48,8 +48,9 @@ export function ReviewList() {
   }
 
   const getList = useCallback(async () => {
+    const path = isMainPage ? '/api/review' : `/api/review/user/${userId}`
     try {
-      const fetched = await request(`/api/review`, 'GET', null, {
+      const fetched = await request(path, 'GET', null, {
         Authorization: `Bearer ${token}`,
       })
       setList(fetched)
@@ -90,12 +91,14 @@ export function ReviewList() {
                     >
                       Подробнее
                     </Button>
-                    <Button
-                      size="small"
-                      onClick={onClickEditReview.bind(null, review._id)}
-                    >
-                      Редактировать
-                    </Button>
+                    {isMainPage ? null : (
+                      <Button
+                        size="small"
+                        onClick={onClickEditReview.bind(null, review._id)}
+                      >
+                        Редактировать
+                      </Button>
+                    )}
                   </CardActions>
                 </Card>
               </Grid>

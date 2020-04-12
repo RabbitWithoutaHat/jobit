@@ -1,10 +1,9 @@
 import React from 'react'
+import { ReviewList } from './Review/components/ReviewList'
 
 
 export const MainPage = () => {
   return (
-    <div>
-
-      Main</div>
+   <ReviewList isMainPage={true} />
   )
 }
