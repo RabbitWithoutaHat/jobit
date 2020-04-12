@@ -71,13 +71,14 @@ export default function LocationInputMap({ form, setForm, setError }) {
       className={classes.myAutocomplete}
       id="google-map-demo"
       getOptionLabel={option =>
-        typeof option === 'string' ? option : option ? option.description : ''
+        typeof option === 'string' ? option : option ? option.address : ''
       }
       filterOptions={x => x}
       options={options}
       noOptionsText="Введите адрес"
       autoComplete
       includeInputInList
+      value={form.address || ''}
       onChange={handleSelect}
       renderInput={params => (
         <TextField
@@ -86,7 +87,6 @@ export default function LocationInputMap({ form, setForm, setError }) {
           variant="outlined"
           fullWidth
           onChange={handleChange}
-          value={form.address}
           filled={true}
           shrink
         />

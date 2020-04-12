@@ -8,9 +8,10 @@ import Grid from '@material-ui/core/Grid'
 import { TextField } from '@material-ui/core'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
-import { LocationSearchInput } from './components/LocationSearchInput'
 import Snackbar from '@material-ui/core/Snackbar'
 import { useParams } from 'react-router-dom'
+import LocationInputMap from './components/LocationInputMap'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
 import Loader from '../../common/Loader'
 
@@ -33,42 +34,13 @@ const useStyles = makeStyles(theme => ({
   mapContainer: {
     marginBottom: theme.spacing(3),
   },
+  locationInput: {
+    width: '100%',
+  },
   ratingCheckboxContainer: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-  },
-  map: {
-    height: 400,
-    width: '100%',
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  avatar: {
-    width: theme.spacing(20),
-    height: theme.spacing(20),
-    margin: 'auto',
-    backgroundColor: theme.palette.secondary.main,
-  },
-  searchCompanyWrapper: { position: 'relative' },
-  autocompleteDropdownContainer: {
-    width: '98%',
-    position: 'absolute',
-    backgroundColor: 'white',
-    fontSize: '1rem',
-    height: 120,
-    zIndex: 5,
-    borderRadius: '5px',
-    padding: '5px 10px',
-  },
-  autocompleteDropdownItem: {
-    // padding: '5px 10px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    lineHeight: '1.5rem',
   },
 }))
 
@@ -77,10 +49,8 @@ export const NewReviewPage = () => {
   const classes = useStyles()
   const { request, loading } = useHttp()
   const [form, setForm] = useState({})
-  const [companies, setCompanies] = useState()
-  const [showCompanySearchDropdown, setShowCompanySearchDropdown] = useState(
-    false,
-  )
+  const [companies, setCompanies] = useState([])
+  console.log('NewReviewPage -> companies', companies)
   const { clearError, error, setError } = useHttp()
   const { token, userId } = useContext(AuthContext)
 
@@ -89,8 +59,8 @@ export const NewReviewPage = () => {
   }
 
   const searchCompany = async event => {
+    event.persist()
     setForm({ ...form, [event.target.name]: event.target.value })
-    setShowCompanySearchDropdown(true)
     try {
       const data = await request(
         `/api/company/search/${event.target.value}`,
@@ -101,8 +71,6 @@ export const NewReviewPage = () => {
         },
         false,
       )
-      console.log(data)
-
       setCompanies(data.companies)
     } catch (e) {
       setError(e.message)
@@ -125,11 +93,12 @@ export const NewReviewPage = () => {
     }
   }
 
-  const onSelectCompany = id => {
-    const company = companies.find(company => company._id === id)
-    console.log(company)
+  const onSelectCompany = event => {
+    event.persist()
+    const company = companies.find(
+      company => company.name === event.target.value,
+    )
     setForm({ ...form, ...company })
-    setShowCompanySearchDropdown(false)
   }
 
   const getReview = useCallback(async () => {
@@ -140,7 +109,6 @@ export const NewReviewPage = () => {
         })
         const { _id, ...rest } = fetched.company
         setForm({ ...fetched.review, companyId: _id, ...rest })
-        console.log('log->: getReview -> fetched.company', fetched)
       } catch (e) {}
     }
   }, [token, request, reviewId])
@@ -152,7 +120,7 @@ export const NewReviewPage = () => {
   if (loading) {
     return <Loader />
   }
-  console.log('log->: form', form)
+  console.log('NewReviewPage -> form', form.companyName)
 
   return (
     <>
@@ -163,33 +131,31 @@ export const NewReviewPage = () => {
               <Typography variant="h4"> Добавить отзыв</Typography>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.searchCompanyWrapper}>
-              <TextField
-                name="name"
-                variant="outlined"
-                required
-                fullWidth
-                value={form.companyName}
-                id="name"
-                label="Название компании"
-                autoFocus
-                onChange={searchCompany}
+              <Autocomplete
+                id="free-solo"
+                freeSolo
+                options={companies || []}
+                loading={loading}
+                value={form.companyName || ''}
+                getOptionLabel={option =>
+                  typeof option === 'string'
+                    ? option
+                    : option
+                    ? option.name
+                    : ''
+                }
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    name="name"
+                    label="Название компании"
+                    variant="outlined"
+                    onChange={searchCompany}
+                    onSelect={onSelectCompany}
+                    fullWidth
+                  />
+                )}
               />
-              {companies && companies.length && showCompanySearchDropdown ? (
-                <>
-                  <div className={classes.autocompleteDropdownContainer}>
-                    {companies.map(company => {
-                      return (
-                        <div
-                          className={classes.autocompleteDropdownItem}
-                          onClick={onSelectCompany.bind(null, company._id)}
-                        >
-                          <span>{company.name}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </>
-              ) : null}
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -213,12 +179,13 @@ export const NewReviewPage = () => {
                 name="description"
                 label="Описание компании"
                 id="description"
-                value={form.description}
+                value={form.description || ''}
                 onChange={changeHandler}
               />
             </Grid>
             <Grid className={classes.mapContainer} item xs={12}>
-              <LocationSearchInput
+              <LocationInputMap
+                className={classes.locationInput}
                 form={form}
                 setForm={setForm}
                 setError={setError}
