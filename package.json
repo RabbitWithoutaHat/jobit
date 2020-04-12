@@ -21,6 +21,7 @@
   "homepage": "https://github.com/RabbitWithoutaHat/jobit#readme",
   "dependencies": {
     "@material-ui/lab": "^4.0.0-alpha.39",
+    "autosuggest-highlight": "^3.1.1",
     "bcryptjs": "^2.4.3",
     "config": "^3.2.4",
     "eslint-config-airbnb": "^18.0.1",
@@ -31,8 +32,7 @@
     "express-validator": "^6.3.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.6",
-    "prettier": "^1.19.1",
-    "react-google-maps": "^9.4.5"
+    "prettier": "^1.19.1"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",

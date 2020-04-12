@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
       height: 250,
       zIndex: -5,
       marginTop: -40,
-      backgroundColor: '#76767661',
+      background: 'linear-gradient(180deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
       width: '100vw',
       left: 0,
     },
@@ -54,6 +54,7 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     height: 28,
     marginTop: 20,
+    color: 'white'
   },
   input: {
     color: 'white',
@@ -68,7 +69,6 @@ export default function EditProfileInfo({ setIsEdit, user }) {
 
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.value })
-    console.log(form)
   }
 
   const onClickCancel = () => {
@@ -99,7 +99,7 @@ export default function EditProfileInfo({ setIsEdit, user }) {
               <Avatar
                 className={classes.avatar}
                 alt="Remy Sharp"
-                src="/static/images/avatar/2.jpg"
+                src="/static/img/avatar/2.jpg"
               />
             </Tooltip>
           </Grid>
