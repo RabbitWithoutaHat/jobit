@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   ratingItem: { width: 300, margin: '10px 0', textAlign: 'center' },
 }))
 
-export const NewReviewRating = ({ form, setForm }) => {
+export const NewReviewRating = ({ form, setForm, edit }) => {
   const classes = useStyles()
 
   const changeHandler = event => {
@@ -25,56 +25,76 @@ export const NewReviewRating = ({ form, setForm }) => {
       <Grid item>
         <Box md={6} lg={3} className={classes.ratingItem}>
           <Typography component="legend">Тимлид</Typography>
-          <Rating
-            name="teamleadRating"
-            value={form.teamleadRating}
-            max={10}
-            onChange={changeHandler}
-          />
+          {edit ? (
+            <Rating
+              name="teamleadRating"
+              value={form.teamleadRating}
+              max={10}
+              onChange={changeHandler}
+            />
+          ) : (
+            <Rating value={form.teamleadRating} max={10} readOnly />
+          )}
         </Box>
       </Grid>
       <Grid item>
         <Box md={6} lg={3} className={classes.ratingItem}>
           <Typography component="legend">Обучение/Наставник</Typography>
-          <Rating
-            name="trainingRating"
-            value={form.trainingRating}
-            max={10}
-            onChange={changeHandler}
-          />
+          {edit ? (
+            <Rating
+              name="trainingRating"
+              value={form.trainingRating}
+              max={10}
+              onChange={changeHandler}
+            />
+          ) : (
+            <Rating value={form.trainingRating} max={10} readOnly />
+          )}
         </Box>
       </Grid>
       <Grid item>
         <Box md={6} lg={3} className={classes.ratingItem}>
           <Typography component="legend">Команда</Typography>
-          <Rating
-            name="teamRating"
-            value={form.teamRating}
-            max={10}
-            onChange={changeHandler}
-          />
+          {edit ? (
+            <Rating
+              name="teamRating"
+              value={form.teamRating}
+              max={10}
+              onChange={changeHandler}
+            />
+          ) : (
+            <Rating value={form.teamRating} max={10} readOnly />
+          )}
         </Box>
       </Grid>
       <Grid item>
         <Box md={6} lg={3} className={classes.ratingItem}>
           <Typography component="legend">Рабочее место/Оборудование</Typography>
-          <Rating
-            name="workplaceRating"
-            value={form.workplaceRating}
-            max={10}
-            onChange={changeHandler}
-          />
+          {edit ? (
+            <Rating
+              name="workplaceRating"
+              value={form.workplaceRating}
+              max={10}
+              onChange={changeHandler}
+            />
+          ) : (
+            <Rating value={form.workplaceRating} max={10} readOnly />
+          )}
         </Box>
       </Grid>
       <Grid item>
         <Box md={6} lg={3} className={classes.ratingItem}>
           <Typography component="legend">Разнообразие задач</Typography>
-          <Rating
-            name="taskRating"
-            value={form.taskRating}
-            max={10}
-            onChange={changeHandler}
-          />
+          {edit ? (
+            <Rating
+              name="taskRating"
+              value={form.taskRating}
+              max={10}
+              onChange={changeHandler}
+            />
+          ) : (
+            <Rating value={form.taskRating} max={10} readOnly />
+          )}
         </Box>
       </Grid>
     </>

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { NewReviewRating } from './components/NewReviewRating'
-import { ReviewCheckbox } from './components/ReviewCheckbox'
+import { NewReviewCheckbox } from './components/NewReviewCheckbox'
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
 import { makeStyles } from '@material-ui/core/styles'
@@ -68,16 +68,10 @@ export const ReviewReadMorePage = props => {
   if (loading) {
     return <Loader />
   }
-
-  console.log('log->: form.companyName', form)
   return (
     <>
       <Grid className={classes.mainGrid} container>
         <Grid container spacing={2}>
-          <Grid className={classes.titleGrid} item xs={12}>
-            <Typography variant="h4"> Отзыв</Typography>
-          </Grid>
-
           <Grid item xs={12} sm={6}>
             <Typography variant="subtitle1" className={classes.textItemTitle}>
               Компания:
@@ -138,7 +132,7 @@ export const ReviewReadMorePage = props => {
 
           <Grid className={classes.ratingCheckboxContainer} item xs={12}>
             <NewReviewRating form={form} setForm={setForm} />
-            <ReviewCheckbox form={form} setForm={setForm} />
+            <NewReviewCheckbox form={form} setForm={setForm} />
           </Grid>
         </Grid>
         <Snackbar

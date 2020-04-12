@@ -28,10 +28,10 @@ router.post('/new', auth, async (req, res) => {
 
     await User.findOneAndUpdate(
       { _id: userId },
-      { $set: { reviews: [review._id] } },
+      { $push: { reviews: [review._id] } },
     )
 
-    res.status(200).json({ message: 'Отзыв сохранен' })
+    res.status(200).json({ message: 'Отзыв сохранен', id: review._id })
   } catch (error) {
     res.status(500).json({
       message: 'Не удалось сохранить новый Отзыв',
@@ -75,7 +75,7 @@ router.put('/update', auth, async (req, res) => {
 
     await User.findOneAndUpdate(
       { _id: userId },
-      { $set: { reviews: [review._id] } },
+      { $push: { reviews: [review._id] } },
     )
 
     res.status(200).json({ message: 'Отзыв сохранен' })
@@ -83,6 +83,22 @@ router.put('/update', auth, async (req, res) => {
     res.status(500).json({
       message: 'Не удалось сохранить новый Отзыв',
       error,
+    })
+  }
+})
+
+// review by user
+router.get('/user/:userId', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId)
+    const userReviewsId = user.reviews
+    const reviews = await Review.find({ _id: { $in: userReviewsId } })
+    res.json(reviews)
+  } catch (error) {
+    console.log(error)
+
+    res.status(500).json({
+      message: 'Не удалось получить отзыв',
     })
   }
 })
