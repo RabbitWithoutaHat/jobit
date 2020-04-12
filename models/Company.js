@@ -18,7 +18,7 @@ const schema = new Schema({
   ],
   commonRate: Number,
   address: String,
-  latLng: { lat: Number, lng: Number },
+  placeId: String,
 })
 
 module.exports = model('Company', schema)

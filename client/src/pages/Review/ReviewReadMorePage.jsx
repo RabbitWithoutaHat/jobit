@@ -69,7 +69,6 @@ export const ReviewReadMorePage = props => {
     return <Loader />
   }
 
-  console.log('log->: form.companyName', form)
   return (
     <>
       <Grid className={classes.mainGrid} container>

@@ -6,8 +6,9 @@ import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import AvatarImg from '../../../images/hacker.png'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({ 
   root: {
     flexGrow: 1,
     fontSize: 17,
@@ -19,7 +20,7 @@ const useStyles = makeStyles(theme => ({
       height: 250,
       zIndex: -5,
       marginTop: -40,
-      backgroundColor: '#76767661',
+      background: 'linear-gradient(160deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
       width: '100vw',
       left: 0,
     },
@@ -52,6 +53,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'end',
     height: 30,
     marginTop: 62,
+    color: 'white'
   },
   textItem: {
     height: 28,
@@ -88,11 +90,7 @@ export default function ProfileInfo({ setIsEdit, user, setUser }) {
     <div className={classes.root}>
       <Grid className={classes.container} container>
         <Grid item xs={12} sm={3} lg={2} className={classes.avatarGrid}>
-          <Avatar
-            className={classes.avatar}
-            alt="Remy Sharp"
-            src="/static/images/avatar/2.jpg"
-          />
+          <Avatar className={classes.avatar} alt="Remy Sharp" src={AvatarImg} />
         </Grid>
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
           <Typography className={classes.textItem}>

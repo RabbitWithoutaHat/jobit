@@ -9,7 +9,7 @@ const router = Router()
 
 // add review
 router.post('/new', auth, async (req, res) => {
-  const { name, description, address, latLng, userId, ...rest } = req.body
+  const { name, description, address, placeId, userId, ...rest } = req.body
   try {
     const review = new Review({
       ...rest,
@@ -21,7 +21,7 @@ router.post('/new', auth, async (req, res) => {
       name,
       description,
       address,
-      latLng,
+      placeId,
       reviews: [review._id],
     })
     await company.save()
@@ -47,7 +47,7 @@ router.put('/update', auth, async (req, res) => {
     name,
     description,
     address,
-    latLng,
+    placeId,
     userId,
     companyId,
     ...rest
@@ -70,7 +70,7 @@ router.put('/update', auth, async (req, res) => {
 
     await Company.findOneAndUpdate(
       { _id: companyId },
-      { $set: { name, description, address, latLng, reviews: [review._id] } },
+      { $set: { name, description, address, placeId, reviews: [review._id] } },
     )
 
     await User.findOneAndUpdate(
