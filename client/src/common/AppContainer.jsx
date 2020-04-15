@@ -9,12 +9,15 @@ const useStyles = makeStyles(theme => ({
     marginTop: 100,
     paddingBottom: 40,
   },
+  background: {
+    backgroundColor: '#ffff00'
+  },
 }))
 
 export const AppContainer = props => {
   const classes = useStyles()
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider className={classes.background} theme={theme}>
       <Container className={classes.container} maxWidth="lg">
         {props.children}
       </Container>

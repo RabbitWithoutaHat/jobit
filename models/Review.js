@@ -35,6 +35,7 @@ const schema = new Schema({
   english: Boolean,
   training: Boolean,
   relocation: Boolean,
+  commonRating: Number,
 });
 
 module.exports = model('Review', schema);

@@ -9,6 +9,9 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Snackbar from '@material-ui/core/Snackbar'
 import Divider from '@material-ui/core/Divider'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
 
 import Loader from '../../common/Loader'
 
@@ -38,6 +41,12 @@ const useStyles = makeStyles(theme => ({
   },
   textItem: {
     marginBottom: 15,
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 20
   },
 }))
 
@@ -69,8 +78,9 @@ export const ReviewReadMorePage = props => {
     return <Loader />
   }
   return (
-    <>
-      <Grid className={classes.mainGrid} container>
+    <Card >
+      <CardContent className={classes.card}>
+      <Grid className={classes.mainGrid} container >
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Typography variant="subtitle1" className={classes.textItemTitle}>
@@ -129,7 +139,7 @@ export const ReviewReadMorePage = props => {
               {form.questions || null}
             </Typography>
           </Grid>
-
+            
           <Grid className={classes.ratingCheckboxContainer} item xs={12}>
             <NewReviewRating form={form} setForm={setForm} />
             <NewReviewCheckbox form={form} setForm={setForm} />
@@ -144,6 +154,8 @@ export const ReviewReadMorePage = props => {
           }}
         />
       </Grid>
-    </>
+      </CardContent>
+      </Card>
+   
   )
 }
