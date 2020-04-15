@@ -7,24 +7,80 @@ const auth = require('../middleware/auth.middleware')
 
 const router = Router()
 
+function calculateCommonRating(arrayRating) {
+  const filteredRating = arrayRating.filter(rating => rating)
+  const average = filteredRating.reduce((total, amount, index, array) => {
+    // eslint-disable-next-line no-param-reassign
+    total += Number(amount)
+    if (index === array.length - 1) {
+      return total / array.length
+    }
+    return total
+  }, 0)
+  return Math.round(average)
+}
+
 // add review
 router.post('/new', auth, async (req, res) => {
-  const { name, description, address, placeId, userId, ...rest } = req.body
+  const {
+    name,
+    description,
+    address,
+    placeId,
+    userId,
+    companyId,
+    teamleadRating,
+    trainingRating,
+    teamRating,
+    workplaceRating,
+    taskRating,
+    ...rest
+  } = req.body
+
+  const arrayRating = [
+    teamleadRating,
+    trainingRating,
+    teamRating,
+    workplaceRating,
+    taskRating,
+  ]
+
   try {
     const review = new Review({
       ...rest,
       companyName: name,
+      commonRating: calculateCommonRating(arrayRating),
+      teamleadRating,
+      trainingRating,
+      teamRating,
+      workplaceRating,
+      taskRating,
     })
     await review.save()
 
-    const company = new Company({
-      name,
-      description,
-      address,
-      placeId,
-      reviews: [review._id],
-    })
-    await company.save()
+    if (companyId) {
+      await Company.findOneAndUpdate(
+        { _id: companyId },
+        {
+          $set: {
+            name,
+            description,
+            address,
+            placeId,
+          },
+          $push: { reviews: [review._id] },
+        },
+      )
+    } else {
+      const company = new Company({
+        name,
+        description,
+        address,
+        placeId,
+        reviews: [review._id],
+      })
+      await company.save()
+    }
 
     await User.findOneAndUpdate(
       { _id: userId },
@@ -50,32 +106,71 @@ router.put('/update', auth, async (req, res) => {
     placeId,
     userId,
     companyId,
+    teamleadRating,
+    trainingRating,
+    teamRating,
+    workplaceRating,
+    taskRating,
+    commonRating,
     ...rest
   } = req.body
   try {
     let review
 
+    const arrayRating = [
+      teamleadRating,
+      trainingRating,
+      teamRating,
+      workplaceRating,
+      taskRating,
+    ]
+
     if (id) {
       review = await Review.findOneAndUpdate(
         { _id: id },
-        { $set: { ...rest, companyName: name } },
+        {
+          $set: {
+            ...rest,
+            teamleadRating,
+            trainingRating,
+            teamRating,
+            workplaceRating,
+            taskRating,
+            companyName: name,
+            commonRating: calculateCommonRating(arrayRating),
+          },
+        },
       )
     } else {
       review = new Review({
         ...rest,
         companyName: name,
+        commonRating: calculateCommonRating(arrayRating),
+        teamleadRating,
+        trainingRating,
+        teamRating,
+        workplaceRating,
+        taskRating,
       })
       await review.save()
+
+      await User.findOneAndUpdate(
+        { _id: userId },
+        { $push: { reviews: [review._id] } },
+      )
     }
 
     await Company.findOneAndUpdate(
       { _id: companyId },
-      { $set: { name, description, address, placeId, reviews: [review._id] } },
-    )
-
-    await User.findOneAndUpdate(
-      { _id: userId },
-      { $push: { reviews: [review._id] } },
+      {
+        $set: {
+          name,
+          description,
+          address,
+          placeId,
+        },
+        $push: { reviews: [review._id] },
+      },
     )
 
     res.status(200).json({ message: 'Отзыв сохранен' })

@@ -10,11 +10,15 @@ import Grid from '@material-ui/core/Grid'
 import { useHttp } from '../../../hooks/http.hook'
 import { AuthContext } from '../../../context/AuthContext'
 import Loader from '../../../common/Loader'
+import { RatingIndicator } from '../components/RatingIndicator'
 
 const useStyles = makeStyles({
   root: {
+    display: 'flex',
     minWidth: 275,
-    marginTop: 20,
+    height: 200,
+    justifyContent: 'space-between',
+    padding: 15,
   },
   marginContainer: {
     marginTop: 25,
@@ -29,6 +33,19 @@ const useStyles = makeStyles({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    width: '65%',
+    justifyContent: 'space-between',
+  },
+  cover: {
+    minWidth: '35%',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  textItem: {
+    whiteSpace: 'normal',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    height: 60,
   },
 })
 
@@ -65,41 +82,52 @@ export function ReviewList({ isMainPage }) {
     return <Loader />
   }
 
+ 
   return (
     <>
       <Grid className={classes.marginContainer} container spacing={4}>
         {!loading && list && (
           <>
             {list.map(review => (
-              <Grid item key={review._id} xs={12} sm={6} md={6}>
+              <Grid item key={review._id} xs={12} sm={12} md={6}>
                 <Card className={classes.root}>
-                  <CardContent>
-                    <Typography variant="h5" component="h2">
-                      {review.companyName ? review.companyName : 'Компания'}
-                    </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                      {review.position ? review.position : ''}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                      {review.review ? review.review : ''}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={onClickReadReview.bind(null, review._id)}
-                    >
-                      Подробнее
-                    </Button>
-                    {isMainPage ? null : (
+                  <div className={classes.card}>
+                    <CardContent>
+                      <Typography variant="h5" component="h2">
+                        {review.companyName ? review.companyName : 'Компания'}
+                      </Typography>
+                      <Typography className={classes.pos} color="textSecondary">
+                        {review.position ? review.position : ''}
+                      </Typography>
+                      <Typography
+                        className={classes.textItem}
+                        variant="body2"
+                        component="p"
+                      >
+                        {review.review ? review.review : ''}
+                      </Typography>
+                    </CardContent>
+                    <CardActions className={classes.button}>
                       <Button
                         size="small"
-                        onClick={onClickEditReview.bind(null, review._id)}
+                        onClick={onClickReadReview.bind(null, review._id)}
                       >
-                        Редактировать
+                        Подробнее
                       </Button>
-                    )}
-                  </CardActions>
+                      {isMainPage ? null : (
+                        <Button
+                          size="small"
+                          onClick={onClickEditReview.bind(null, review._id)}
+                        >
+                          Редактировать
+                        </Button>
+                      )}
+                    </CardActions>
+                  </div>
+                  <div className={classes.cover}> 
+                  <RatingIndicator commonRating={review.commonRating} />
+
+                  </div>
                 </Card>
               </Grid>
             ))}
