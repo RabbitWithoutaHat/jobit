@@ -186,8 +186,8 @@ router.put('/update', auth, async (req, res) => {
 router.get('/user/:userId', auth, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId)
-    const userReviewsId = user.reviews
-    const reviews = await Review.find({ _id: { $in: userReviewsId } })
+    const userReviewsIds = user.reviews
+    const reviews = await Review.find({ _id: { $in: userReviewsIds } })
     res.json(reviews)
   } catch (error) {
     console.log(error)
@@ -198,14 +198,26 @@ router.get('/user/:userId', auth, async (req, res) => {
   }
 })
 
+// review by company
+router.get('/company/:companyId', auth, async (req, res) => {
+  try {
+    const company = await Company.findById(req.params.companyId)
+    const companyReviewsIds = company.reviews
+    const reviews = await Review.find({ _id: { $in: companyReviewsIds } })
+    res.json(reviews)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'Не удалось получить отзыв',
+    })
+  }
+})
+
 // review
 router.get('/:id', auth, async (req, res) => {
   try {
     const review = await Review.findById(req.params.id)
-    const company = await Company.findOne({
-      reviews: req.params.id,
-    })
-    res.json({ review, company })
+    res.json(review)
   } catch (error) {
     console.log(error)
 
