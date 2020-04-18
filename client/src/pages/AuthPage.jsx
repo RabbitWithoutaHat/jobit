@@ -54,6 +54,20 @@ const useStyles = makeStyles(theme => ({
   label: {
     marginBottom: theme.spacing(3),
   },
+  linkButton: {
+    color: '#0277bd',
+    fontSize: '0.875rem',
+    fontFamily: 'Exo 2',
+    fontWeight: 400,
+    lineHeight: 1.43,
+    '&:hover': {
+      cursor: 'pointer',
+      textDecoration: 'underline',
+    },
+  },
+  linkContainer: {
+    justifyContent: 'space-between',
+  },
 }))
 
 export default function AuthPage() {
@@ -61,9 +75,12 @@ export default function AuthPage() {
   const { loading, error, request, clearError } = useHttp()
   const classes = useStyles()
   const [form, setForm] = useState({
-    email: '',
-    password: '',
-  })
+      login: '',
+      email: '',
+      password: '',
+    }),
+    [isRegistration, setIsRegistration] = useState(false)
+
   const [errorMessage, setError] = useState()
   useEffect(() => {
     setError(error)
@@ -76,13 +93,14 @@ export default function AuthPage() {
   const registerHandler = async () => {
     try {
       const data = await request('/api/auth/register', 'POST', { ...form })
+      setIsRegistration(false)
       setError(data.message)
     } catch (error) {}
   }
   const loginHandler = async () => {
     try {
       const data = await request('/api/auth/login', 'POST', { ...form })
-      auth.login(data.token, data.userId)
+      auth.login(data.token, data.userId, data.userLogin)
     } catch (error) {}
   }
 
@@ -97,6 +115,21 @@ export default function AuthPage() {
           Войти
         </Typography>
         <form className={classes.form} noValidate>
+          {isRegistration ? (
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="login"
+              label="Login"
+              name="login"
+              autoComplete="login"
+              autoFocus
+              onChange={changeHandler}
+            />
+          ) : null}
+
           <TextField
             variant="outlined"
             margin="normal"
@@ -109,6 +142,7 @@ export default function AuthPage() {
             autoFocus
             onChange={changeHandler}
           />
+
           <TextField
             variant="outlined"
             margin="normal"
@@ -126,32 +160,52 @@ export default function AuthPage() {
             control={<Checkbox value="remember" color="primary" />}
             label="Запомнить меня"
           />
-          <Button
-            // type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.enter}
-            onClick={loginHandler}
-            disabled={loading}
-          >
-            Войти
-          </Button>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={registerHandler}
-            disabled={loading}
-          >
-            Зарегестрироваться
-          </Button>
-          <Grid container>
+          {isRegistration ? (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={registerHandler}
+              disabled={loading}
+            >
+              Зарегестрироваться
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.enter}
+              onClick={loginHandler}
+              disabled={loading}
+            >
+              Войти
+            </Button>
+          )}
+
+          <Grid container className={classes.linkContainer}>
             <Link href="#" variant="body2">
               Забыли пароль?
             </Link>
+
+            {isRegistration ? (
+              <span
+                className={classes.linkButton}
+                onClick={() => setIsRegistration(false)}
+              >
+                Войти
+              </span>
+            ) : (
+              <span
+                className={classes.linkButton}
+                onClick={() => setIsRegistration(true)}
+              >
+                Регистрация
+              </span>
+            )}
           </Grid>
         </form>
       </div>

@@ -8,7 +8,7 @@ const auth = require('../middleware/auth.middleware')
 const router = Router()
 
 function calculateCommonRating(arrayRating) {
-  const filteredRating = arrayRating.filter(rating => rating)
+  const filteredRating = arrayRating.filter((rating) => rating)
   const average = filteredRating.reduce((total, amount, index, array) => {
     // eslint-disable-next-line no-param-reassign
     total += Number(amount)
@@ -34,6 +34,8 @@ router.post('/new', auth, async (req, res) => {
     teamRating,
     workplaceRating,
     taskRating,
+    login,
+    userLogin,
     ...rest
   } = req.body
 
@@ -55,6 +57,7 @@ router.post('/new', auth, async (req, res) => {
       teamRating,
       workplaceRating,
       taskRating,
+      author: userLogin,
     })
     await review.save()
 
@@ -151,6 +154,7 @@ router.put('/update', auth, async (req, res) => {
         teamRating,
         workplaceRating,
         taskRating,
+        author: userId,
       })
       await review.save()
 
@@ -194,6 +198,18 @@ router.get('/user/:userId', auth, async (req, res) => {
 
     res.status(500).json({
       message: 'Не удалось получить отзыв',
+    })
+  }
+})
+
+// last reviews
+router.get('/last', auth, async (req, res) => {
+  try {
+    const reviews = await Review.find().sort({ date: -1 }).limit(6)
+    res.json(reviews)
+  } catch (error) {
+    res.status(500).json({
+      message: 'Не удалось получить последние отзывы',
     })
   }
 })
