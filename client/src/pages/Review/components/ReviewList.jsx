@@ -72,7 +72,7 @@ export function ReviewList({ isMainPage }) {
       })
       setList(fetched)
     } catch (e) {}
-  }, [token, request])
+  }, [token, request, isMainPage, userId])
 
   useEffect(() => {
     getList()
@@ -82,7 +82,6 @@ export function ReviewList({ isMainPage }) {
     return <Loader />
   }
 
- 
   return (
     <>
       <Grid className={classes.marginContainer} container spacing={4}>
@@ -124,9 +123,8 @@ export function ReviewList({ isMainPage }) {
                       )}
                     </CardActions>
                   </div>
-                  <div className={classes.cover}> 
-                  <RatingIndicator commonRating={review.commonRating} />
-
+                  <div className={classes.cover}>
+                    <RatingIndicator commonRating={review.commonRating} />
                   </div>
                 </Card>
               </Grid>

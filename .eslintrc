@@ -12,7 +12,8 @@
     "object-curly-newline": "off",
     "no-underscore-dangle": "off",
     "no-unused-vars": "warn",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "arrow-parens": "off"
   },
   "plugins": ["prettier"],
   "env": { "browser": true, "node": true }
