@@ -15,7 +15,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useParams, useHistory } from 'react-router-dom'
 
 import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 
 import Loader from '../../common/Loader'
