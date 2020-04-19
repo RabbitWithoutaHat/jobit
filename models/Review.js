@@ -1,16 +1,18 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model, Types } = require('mongoose')
 
 const schema = new Schema({
-  autor: {
-    type: Types.ObjectId,
-    ref: 'User',
+  author: {
+    type: String,
   },
   company: {
     type: Types.ObjectId,
     ref: 'Company',
   },
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
   companyName: String,
-  date: Date,
   position: String,
   review: String,
   questions: String,
@@ -36,6 +38,6 @@ const schema = new Schema({
   training: Boolean,
   relocation: Boolean,
   commonRating: Number,
-});
+})
 
-module.exports = model('Review', schema);
+module.exports = model('Review', schema)

@@ -34,16 +34,12 @@ router.post('/new', auth, async (req, res) => {
     teamRating,
     workplaceRating,
     taskRating,
+    login,
+    userLogin,
     ...rest
   } = req.body
 
-  const arrayRating = [
-    teamleadRating,
-    trainingRating,
-    teamRating,
-    workplaceRating,
-    taskRating,
-  ]
+  const arrayRating = [teamleadRating, trainingRating, teamRating, workplaceRating, taskRating]
 
   try {
     const review = new Review({
@@ -55,6 +51,7 @@ router.post('/new', auth, async (req, res) => {
       teamRating,
       workplaceRating,
       taskRating,
+      author: userLogin,
     })
     await review.save()
 
@@ -82,10 +79,7 @@ router.post('/new', auth, async (req, res) => {
       await company.save()
     }
 
-    await User.findOneAndUpdate(
-      { _id: userId },
-      { $push: { reviews: [review._id] } },
-    )
+    await User.findOneAndUpdate({ _id: userId }, { $push: { reviews: [review._id] } })
 
     res.status(200).json({ message: 'Отзыв сохранен', id: review._id })
   } catch (error) {
@@ -117,13 +111,7 @@ router.put('/update', auth, async (req, res) => {
   try {
     let review
 
-    const arrayRating = [
-      teamleadRating,
-      trainingRating,
-      teamRating,
-      workplaceRating,
-      taskRating,
-    ]
+    const arrayRating = [teamleadRating, trainingRating, teamRating, workplaceRating, taskRating]
 
     if (id) {
       review = await Review.findOneAndUpdate(
@@ -151,13 +139,11 @@ router.put('/update', auth, async (req, res) => {
         teamRating,
         workplaceRating,
         taskRating,
+        author: userId,
       })
       await review.save()
 
-      await User.findOneAndUpdate(
-        { _id: userId },
-        { $push: { reviews: [review._id] } },
-      )
+      await User.findOneAndUpdate({ _id: userId }, { $push: { reviews: [review._id] } })
     }
 
     await Company.findOneAndUpdate(
@@ -194,6 +180,18 @@ router.get('/user/:userId', auth, async (req, res) => {
 
     res.status(500).json({
       message: 'Не удалось получить отзыв',
+    })
+  }
+})
+
+// last reviews
+router.get('/last', auth, async (req, res) => {
+  try {
+    const reviews = await Review.find().sort({ date: -1 })
+    res.json(reviews)
+  } catch (error) {
+    res.status(500).json({
+      message: 'Не удалось получить последние отзывы',
     })
   }
 })

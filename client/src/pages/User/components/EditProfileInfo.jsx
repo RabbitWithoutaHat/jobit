@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
       height: 250,
       zIndex: -5,
       marginTop: -40,
-      background: 'linear-gradient(180deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
+      background: 'linear-gradient(160deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
       width: '100vw',
       left: 0,
     },

@@ -13,15 +13,17 @@ import Loader from '../../../common/Loader'
 import { RatingIndicator } from '../components/RatingIndicator'
 
 const useStyles = makeStyles({
+  marginContainer: {
+    marginTop: 15,
+    display: 'flex',
+    padding: 30,
+  },
   root: {
     display: 'flex',
     minWidth: 275,
-    height: 200,
+    height: 230,
     justifyContent: 'space-between',
-    padding: 15,
-  },
-  marginContainer: {
-    marginTop: 25,
+    padding: '15px 20px',
   },
   title: {
     fontSize: 14,
@@ -35,6 +37,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     width: '65%',
     justifyContent: 'space-between',
+    margin: '7px',
   },
   cover: {
     minWidth: '35%',
@@ -45,7 +48,11 @@ const useStyles = makeStyles({
     whiteSpace: 'normal',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    height: 60,
+    height: 55,
+  },
+  button: {},
+  padding: {
+    padding: '5px',
   },
 })
 
@@ -65,7 +72,7 @@ export function ReviewList({ isMainPage }) {
   }
 
   const getList = useCallback(async () => {
-    const path = isMainPage ? '/api/review' : `/api/review/user/${userId}`
+    const path = isMainPage ? '/api/review/last' : `/api/review/user/${userId}`
     try {
       const fetched = await request(path, 'GET', null, {
         Authorization: `Bearer ${token}`,
@@ -81,17 +88,25 @@ export function ReviewList({ isMainPage }) {
   if (loading) {
     return <Loader />
   }
+  console.log(list)
 
   return (
-    <>
-      <Grid className={classes.marginContainer} container spacing={4}>
-        {!loading && list && (
-          <>
-            {list.map(review => (
+    <Grid className={classes.marginContainer} container spacing={3}>
+      {!loading && list && (
+        <>
+          {list.reverse().map(review => {
+            const date = review.date ? new Date(review.date) : undefined
+            return (
               <Grid item key={review._id} xs={12} sm={12} md={6}>
                 <Card className={classes.root}>
                   <div className={classes.card}>
-                    <CardContent>
+                    <CardContent className={classes.padding}>
+                      <Typography variant="h6" component="h2">
+                        {review.author ? review.author : 'Пользователь'}
+                      </Typography>
+                      <Typography variant="body2" component="body2">
+                        {review.date ? date.toLocaleDateString() : 'Дата'}
+                      </Typography>
                       <Typography variant="h5" component="h2">
                         {review.companyName ? review.companyName : 'Компания'}
                       </Typography>
@@ -128,10 +143,10 @@ export function ReviewList({ isMainPage }) {
                   </div>
                 </Card>
               </Grid>
-            ))}
-          </>
-        )}
-      </Grid>
-    </>
+            )
+          })}
+        </>
+      )}
+    </Grid>
   )
 }

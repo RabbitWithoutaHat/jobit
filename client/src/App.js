@@ -10,7 +10,7 @@ import NavBar from './common/NavBar'
 import Loader from './common/Loader'
 
 function App() {
-  const { token, login, logout, userId, ready } = useAuth()
+  const { token, login, logout, userId, userLogin, ready } = useAuth()
   const { saveLocation, location } = useLocation()
 
   const isAuthenticated = !!token
@@ -21,7 +21,7 @@ function App() {
   }
   return (
     <AuthContext.Provider
-      value={{ token, login, logout, userId, isAuthenticated }}
+      value={{ token, login, logout, userId, userLogin, isAuthenticated }}
     >
       <LocationContext.Provider value={{ saveLocation, location }}>
         <Router>

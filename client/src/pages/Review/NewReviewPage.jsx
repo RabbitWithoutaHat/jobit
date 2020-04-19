@@ -62,7 +62,7 @@ export const NewReviewPage = ({ edit }) => {
   const [form, setForm] = useState({})
   const [companies, setCompanies] = useState([])
   const { clearError, error, setError } = useHttp()
-  const { token, userId } = useContext(AuthContext)
+  const { token, userId, userLogin } = useContext(AuthContext)
 
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.value })
@@ -102,7 +102,6 @@ export const NewReviewPage = ({ edit }) => {
 
   const onSelectCompany = event => {
     event.persist()
-    console.log('log->: NewReviewPage -> companies', companies)
     const company = companies.find(company => company.name === event.target.value)
     if (company) {
       const { _id, ...rest } = company

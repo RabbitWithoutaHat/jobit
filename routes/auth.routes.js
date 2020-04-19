@@ -10,7 +10,7 @@ const router = Router()
 router.post(
   '/register',
   [
-    check('email', 'Некорректный email').isEmail(),
+    check('email', 'Некорректный email').isEmail().normalizeEmail(),
     check('password', 'Минимальный длана пароля 8 символов').isLength({
       min: 8,
     }),
@@ -25,7 +25,7 @@ router.post(
         })
       }
 
-      const { email, password } = req.body
+      const { email, password, login } = req.body
       const candidate = await User.findOne({
         email,
       })
@@ -36,6 +36,7 @@ router.post(
       }
       const hashedPassword = await bcrypt.hash(password, 12)
       const user = new User({
+        login,
         email,
         password: hashedPassword,
       })
@@ -45,7 +46,7 @@ router.post(
       })
     } catch (error) {
       res.status(500).json({
-        message: 'Ощибка авторизации',
+        message: 'Ошибка авторизации',
       })
     }
   },
@@ -70,6 +71,7 @@ router.post(
       }
 
       const { email, password } = req.body
+      console.log('log->: email', req.body)
       const user = await User.findOne({
         email,
       })
@@ -96,6 +98,7 @@ router.post(
       res.json({
         token,
         userId: user.id,
+        userLogin: user.login,
       })
     } catch (error) {
       res.status(500).json({
