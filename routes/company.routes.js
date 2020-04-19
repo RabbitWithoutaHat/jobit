@@ -22,6 +22,19 @@ router.get('/search/:name', auth, async (req, res) => {
   })
 })
 
+
+// last companys
+router.get('/last', async (req, res) => {
+  try {
+    const companiesList = await Company.find().sort({ date: -1 }).limit(4)
+    res.json(companiesList)
+  } catch (error) {
+    res.status(500).json({
+      message: 'Не удалось получить последние компании',
+    })
+  }
+})
+
 // company
 router.get('/:id', auth, async (req, res) => {
   try {
@@ -33,6 +46,7 @@ router.get('/:id', auth, async (req, res) => {
     })
   }
 })
+
 
 // company by review id
 router.get('/review/:reviewId', auth, async (req, res) => {

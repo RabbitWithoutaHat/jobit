@@ -14,7 +14,6 @@ import { RatingIndicator } from '../components/RatingIndicator'
 
 const useStyles = makeStyles({
   marginContainer: {
-    marginTop: 15,
     display: 'flex',
     padding: 30,
   },
@@ -94,7 +93,7 @@ export function ReviewList({ isMainPage }) {
     <Grid className={classes.marginContainer} container spacing={3}>
       {!loading && list && (
         <>
-          {list.reverse().map(review => {
+          {list.map(review => {
             const date = review.date ? new Date(review.date) : undefined
             return (
               <Grid item key={review._id} xs={12} sm={12} md={6}>
@@ -123,7 +122,7 @@ export function ReviewList({ isMainPage }) {
                     </CardContent>
                     <CardActions className={classes.button}>
                       <Button
-                        size="small"
+                      color="primary"
                         onClick={onClickReadReview.bind(null, review._id)}
                       >
                         Подробнее

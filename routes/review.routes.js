@@ -185,9 +185,9 @@ router.get('/user/:userId', auth, async (req, res) => {
 })
 
 // last reviews
-router.get('/last', auth, async (req, res) => {
+router.get('/last', async (req, res) => {
   try {
-    const reviews = await Review.find().sort({ date: -1 })
+    const reviews = await Review.find().sort({ date: -1 }).limit(4)
     res.json(reviews)
   } catch (error) {
     res.status(500).json({
