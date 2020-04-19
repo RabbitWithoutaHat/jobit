@@ -11,6 +11,7 @@ import { useHttp } from '../../../hooks/http.hook'
 import { AuthContext } from '../../../context/AuthContext'
 import Loader from '../../../common/Loader'
 import { RatingIndicator } from '../components/RatingIndicator'
+import Divider from '@material-ui/core/Divider'
 
 const useStyles = makeStyles({
   marginContainer: {
@@ -20,15 +21,12 @@ const useStyles = makeStyles({
   root: {
     display: 'flex',
     minWidth: 275,
-    height: 230,
+    height: 250,
     justifyContent: 'space-between',
     padding: '15px 20px',
   },
   title: {
     fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
   },
   card: {
     height: '100%',
@@ -47,11 +45,28 @@ const useStyles = makeStyles({
     whiteSpace: 'normal',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    height: 60,
+    marginTop: 10,
+    maxHeight: 80,
   },
-  button: {},
+  button: {
+    paddingBottom: 10,
+  },
   padding: {
     padding: '5px',
+  },
+  date: {
+    fontSize: 14,
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
+  userInfo: {
+    marginTop: 8,
+    display: 'flex',
+    justifyContent: 'space-between',
+    fontSize: 14,
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
+  '.MuiCardActions-root': {
+    paddingLeft: 0,
   },
 })
 
@@ -100,32 +115,33 @@ export function ReviewList({ isMainPage }) {
                 <Card className={classes.root}>
                   <div className={classes.card}>
                     <CardContent className={classes.padding}>
-                      <Typography variant="h6" component="h2">
-                        {review.author ? review.author : 'Пользователь'}
-                      </Typography>
-                      <Typography variant="body2" component="body2">
-                        {review.date ? date.toLocaleDateString() : 'Дата'}
-                      </Typography>
                       <Typography variant="h5" component="h2">
                         {review.companyName ? review.companyName : 'Компания'}
                       </Typography>
                       <Typography className={classes.pos} color="textSecondary">
                         {review.position ? review.position : ''}
                       </Typography>
+                      <Divider className={classes.divider} />
                       <Typography className={classes.textItem} variant="body2" component="p">
                         {review.review ? review.review : ''}
                       </Typography>
+                      <div className={classes.userInfo}>
+                        <Typography className={classes.date}>
+                          {review.date ? date.toLocaleDateString() : 'Дата'}
+                        </Typography>
+                        <Typography className={classes.author}>
+                          {review.author ? review.author : 'Пользователь'}
+                        </Typography>
+                      </div>
                     </CardContent>
-                    <CardActions className={classes.button}>
+                    <div className={classes.button}>
                       <Button color="primary" onClick={onClickReadReview.bind(null, review._id)}>
                         Подробнее
                       </Button>
                       {isMainPage ? null : (
-                        <Button color="primary" onClick={onClickEditReview.bind(null, review._id)}>
-                          Редактировать
-                        </Button>
+                        <Button onClick={onClickEditReview.bind(null, review._id)}>Редактировать</Button>
                       )}
-                    </CardActions>
+                    </div>
                   </div>
                   <div className={classes.cover}>
                     <RatingIndicator commonRating={review.commonRating} />
