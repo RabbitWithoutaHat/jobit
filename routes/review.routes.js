@@ -17,7 +17,7 @@ function calculateCommonRating(arrayRating) {
     }
     return total
   }, 0)
-  return Math.round(average)
+  return average.toFixed(1)
 }
 
 // add review

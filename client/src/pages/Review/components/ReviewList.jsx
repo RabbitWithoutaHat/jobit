@@ -49,7 +49,7 @@ const useStyles = makeStyles({
     maxHeight: 80,
   },
   button: {
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   padding: {
     padding: '5px',

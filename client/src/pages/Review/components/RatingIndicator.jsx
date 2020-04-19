@@ -63,7 +63,7 @@ export const RatingIndicator = ({commonRating}) => {
           />
           <path
             className={classes.circle}
-            strokeDasharray={`${commonRating}0, 100`}
+            strokeDasharray={`${commonRating*10}, 100`}
             d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"
