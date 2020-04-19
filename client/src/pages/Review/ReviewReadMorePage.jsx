@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const ReviewReadMorePage = props => {
+export const ReviewReadMorePage = () => {
   const reviewId = useParams().id
   const classes = useStyles()
   const { request, loading } = useHttp()

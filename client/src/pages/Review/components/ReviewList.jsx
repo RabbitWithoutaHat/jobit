@@ -94,7 +94,7 @@ export function ReviewList({ isMainPage }) {
     <Grid className={classes.marginContainer} container spacing={3}>
       {!loading && list && (
         <>
-          {list.map(review => {
+          {list.reverse().map(review => {
             const date = review.date ? new Date(review.date) : undefined
             return (
               <Grid item key={review._id} xs={12} sm={12} md={6}>
