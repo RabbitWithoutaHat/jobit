@@ -1,31 +1,53 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { fade, makeStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
-import InputBase from '@material-ui/core/InputBase'
-import Badge from '@material-ui/core/Badge'
-import MenuItem from '@material-ui/core/MenuItem'
-import Menu from '@material-ui/core/Menu'
-import SearchIcon from '@material-ui/icons/Search'
-import AccountCircle from '@material-ui/icons/AccountCircle'
 import MailIcon from '@material-ui/icons/Mail'
-import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
-import { AuthContext } from '../context/AuthContext'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import PowerOutlinedIcon from '@material-ui/icons/PowerOutlined'
+import NotificationsIcon from '@material-ui/icons/Notifications'
 import PowerOffOutlinedIcon from '@material-ui/icons/PowerOffOutlined'
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
+import {
+  TextField,
+  IconButton,
+  Typography,
+  Badge,
+  Toolbar,
+  AppBar,
+  MenuItem,
+  Menu,
+  fade,
+  makeStyles,
+  withStyles,
+} from '@material-ui/core'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import { useHttp } from '../hooks/http.hook'
+import { AuthContext } from '../context/AuthContext'
+
+const SearchTextField = withStyles({
+  root: {
+    '& .MuiInputBase-root': {
+      color: 'white',
+    },
+    '& label.Mui-focused': {
+      border: 'none',
+    },
+    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+      border: 'none',
+    },
+    '& .MuiInput-underline:after': {
+      border: 'none',
+    },
+    '& .MuiInput-underline:before': {
+      border: 'none',
+    },
+  },
+})(TextField)
 
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
   },
   title: {
     display: 'none',
@@ -38,6 +60,7 @@ const useStyles = makeStyles(theme => ({
   },
   search: {
     position: 'relative',
+    display: 'flex',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
@@ -51,32 +74,22 @@ const useStyles = makeStyles(theme => ({
       width: 'auto',
     },
   },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: 400,
+  underline: {
+    '&&&:before': {
+      borderBottom: 'none',
+    },
+    '&&:after': {
+      borderBottom: 'none',
     },
   },
-  plus: {
+  searchInput: {
+    color: 'white',
+    width: 400,
+    paddingLeft: 20,
+  },
+  plusIcon: {
     padding: 0,
     marginRight: theme.spacing(1),
-  },
-  plusButton: {
-    marginBottom: 2,
   },
   sectionDesktop: {
     display: 'none',
@@ -90,6 +103,12 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
+  autocomplete: {
+    width: 260,
+    '& .MuiAutocomplete-endAdornment': {
+      display: 'none',
+    },
+  },
 }))
 
 export default function NavBar() {
@@ -98,6 +117,10 @@ export default function NavBar() {
   const history = useHistory()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
+  const [companies, setCompanies] = useState([])
+  const [company, setCompany] = useState({})
+  const { request, loading, setError } = useHttp()
+  const { token } = useContext(AuthContext)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -139,6 +162,36 @@ export default function NavBar() {
   const newReviewHandler = event => {
     event.preventDefault()
     history.push('/review/new')
+  }
+
+  const searchCompany = async event => {
+    event.persist()
+    setCompany({ name: event.target.value })
+    try {
+      const data = await request(
+        `/api/company/search/${event.target.value}`,
+        'GET',
+        null,
+        {
+          Authorization: `Bearer ${token}`,
+        },
+        false,
+      )
+
+      setCompanies(data.companies)
+    } catch (e) {
+      setError(e.message)
+    }
+  }
+
+  const onSelectCompany = event => {
+    event.persist()
+    const company = companies.find(company => company.name === event.target.value)
+    if (company) {
+      history.push(`/company/${company._id}`)
+      setCompany({})
+      setCompanies([])
+    }
   }
 
   const menuId = 'primary-search-account-menu'
@@ -203,32 +256,33 @@ export default function NavBar() {
     <div className={classes.grow}>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography
-            onClick={mainHandler}
-            className={classes.title}
-            variant="h6"
-            noWrap
-          >
+          <Typography onClick={mainHandler} className={classes.title} variant="h6" noWrap>
             JobIt
           </Typography>
           <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Найти компанию"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
+            <Autocomplete
+              id="autocomplete-search"
+              autoComplete="off"
+              autoHighlight
+              freeSolo
+              options={companies || []}
+              loading={loading}
+              value={company.name || ''}
+              className={classes.autocomplete}
+              getOptionLabel={option => (typeof option === 'string' ? option : option ? option.name : '')}
+              renderInput={params => (
+                <SearchTextField
+                  {...params}
+                  name="name"
+                  placeholder="Найти компанию"
+                  className={classes.searchInput}
+                  fullWidth
+                  onChange={searchCompany}
+                  onSelect={onSelectCompany}
+                />
+              )}
             />
-            <IconButton
-              className={classes.plus}
-              aria-label="show 17 new notifications"
-              color="inherit"
-              onClick={newReviewHandler}
-            >
+            <IconButton className={classes.plusIcon} color="inherit" onClick={newReviewHandler}>
               <AddCircleOutlineOutlinedIcon className={classes.plusButton} />
             </IconButton>
           </div>
@@ -241,26 +295,15 @@ export default function NavBar() {
                     <MailIcon />
                   </Badge>
                 </IconButton>
-                <IconButton
-                  aria-label="show 17 new notifications"
-                  color="inherit"
-                >
+                <IconButton color="inherit">
                   <Badge badgeContent={17} color="secondary">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-                <IconButton
-                  aria-label="show 17 new notifications"
-                  color="inherit"
-                  onClick={profileHandler}
-                >
+                <IconButton color="inherit" onClick={profileHandler}>
                   <AccountCircleOutlinedIcon />
                 </IconButton>
-                <IconButton
-                  aria-label="show 17 new notifications"
-                  color="inherit"
-                  onClick={logoutHandler}
-                >
+                <IconButton color="inherit" onClick={logoutHandler}>
                   <PowerOffOutlinedIcon />
                 </IconButton>
               </div>
