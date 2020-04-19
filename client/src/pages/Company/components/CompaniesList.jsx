@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'normal',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    height: 70,
+    height: 100,
   },
 }))
 

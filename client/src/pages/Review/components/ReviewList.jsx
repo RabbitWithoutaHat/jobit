@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     whiteSpace: 'normal',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    height: 55,
+    height: 60,
   },
   button: {},
   padding: {
@@ -112,26 +112,16 @@ export function ReviewList({ isMainPage }) {
                       <Typography className={classes.pos} color="textSecondary">
                         {review.position ? review.position : ''}
                       </Typography>
-                      <Typography
-                        className={classes.textItem}
-                        variant="body2"
-                        component="p"
-                      >
+                      <Typography className={classes.textItem} variant="body2" component="p">
                         {review.review ? review.review : ''}
                       </Typography>
                     </CardContent>
                     <CardActions className={classes.button}>
-                      <Button
-                      color="primary"
-                        onClick={onClickReadReview.bind(null, review._id)}
-                      >
+                      <Button color="primary" onClick={onClickReadReview.bind(null, review._id)}>
                         Подробнее
                       </Button>
                       {isMainPage ? null : (
-                        <Button
-                          size="small"
-                          onClick={onClickEditReview.bind(null, review._id)}
-                        >
+                        <Button color="primary" onClick={onClickEditReview.bind(null, review._id)}>
                           Редактировать
                         </Button>
                       )}
