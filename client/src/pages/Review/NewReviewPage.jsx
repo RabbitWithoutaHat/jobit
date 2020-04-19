@@ -1,22 +1,12 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
-
-import { NewReviewRating } from './components/NewReviewRating'
-import { NewReviewCheckbox } from './components/NewReviewCheckbox'
+import { useParams, useHistory } from 'react-router-dom'
+import { TextField, Typography, Button, Snackbar, makeStyles, Grid, Card, CardContent } from '@material-ui/core'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
-import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import { TextField } from '@material-ui/core'
-import { Typography } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import Snackbar from '@material-ui/core/Snackbar'
+import { NewReviewRating } from './components/NewReviewRating'
+import { NewReviewCheckbox } from './components/NewReviewCheckbox'
 import LocationInputMap from './components/LocationInputMap'
-import Autocomplete from '@material-ui/lab/Autocomplete'
-import { useParams, useHistory } from 'react-router-dom'
-
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-
 import Loader from '../../common/Loader'
 
 const useStyles = makeStyles(theme => ({
