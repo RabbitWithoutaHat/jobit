@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -56,8 +57,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: 20,
     color: 'white'
   },
-  input: {
-    color: 'white',
+  textItem: {
+    height: 28,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    paddingTop: 20,
   },
 }))
 
@@ -104,14 +108,9 @@ export default function EditProfileInfo({ setIsEdit, user }) {
             </Tooltip>
           </Grid>
           <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-            <TextField
-              fullWidth
-              id="login"
-              label="ФИО / Логин"
-              name="login"
-              defaultValue={user.login}
-              onChange={changeHandler}
-            />
+            <Typography
+              className={classes.textItem}
+            > {user.login} </ Typography>
             <TextField
               fullWidth
               id="password"

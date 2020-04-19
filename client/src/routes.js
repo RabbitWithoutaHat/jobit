@@ -4,7 +4,7 @@ import { UserPage } from './pages/User/UserPage'
 import { CompanyPage } from './pages/Company/CompanyPage'
 import { MainPage } from './pages/MainPage'
 import { ProfilePage } from './pages/User/ProfilePage'
-import { CompaniesListPage } from './pages/Company/CompaniesListPage'
+import { CompaniesList } from './pages/Company/components/CompaniesList'
 import { UsersListPage } from './pages/User/UsersListPage'
 import { ReviewsListPage } from './pages/Review/ReviewsListPage'
 import { NewReviewPage } from './pages/Review/NewReviewPage'
@@ -39,7 +39,7 @@ export const useRoutes = isAuthenticated => {
           <ReviewsListPage />
         </Route>
         <Route path="/company" exact>
-          <CompaniesListPage />
+          <CompaniesList />
         </Route>
         <Route path="/" exact>
           <MainPage />
