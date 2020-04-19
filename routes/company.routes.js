@@ -34,6 +34,20 @@ router.get('/:id', auth, async (req, res) => {
   }
 })
 
+// company by review id
+router.get('/review/:reviewId', auth, async (req, res) => {
+  try {
+    const company = await Company.findOne({
+      reviews: req.params.reviewId,
+    })
+    res.json(company)
+  } catch (error) {
+    res.status(500).json({
+      message: 'Компания не найдена',
+    })
+  }
+})
+
 // all companies
 router.get('/', auth, async (req, res) => {
   try {

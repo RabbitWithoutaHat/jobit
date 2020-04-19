@@ -93,12 +93,7 @@ export const NewReviewPage = ({ edit }) => {
     const path = reviewId ? '/api/review/update' : '/api/review/new'
     const method = reviewId ? 'PUT' : 'POST'
     try {
-      const data = await request(
-        path,
-        method,
-        { ...form, userId, userLogin },
-        { Authorization: `Bearer ${token}` },
-      )
+      const data = await request(path, method, { ...form, userId }, { Authorization: `Bearer ${token}` })
       history.push(`/review/${reviewId || data.id}`)
     } catch (e) {
       setError(e.message)
@@ -107,9 +102,7 @@ export const NewReviewPage = ({ edit }) => {
 
   const onSelectCompany = event => {
     event.persist()
-    const company = companies.find(
-      company => company.name === event.target.value,
-    )
+    const company = companies.find(company => company.name === event.target.value)
     if (company) {
       const { _id, ...rest } = company
       setForm({ ...form, companyId: _id, ...rest })
@@ -119,11 +112,14 @@ export const NewReviewPage = ({ edit }) => {
   const getReview = useCallback(async () => {
     if (reviewId) {
       try {
-        const fetched = await request(`/api/review/${reviewId}`, 'GET', null, {
+        const reviewInfo = await request(`/api/review/${reviewId}`, 'GET', null, {
           Authorization: `Bearer ${token}`,
         })
-        const { _id, ...rest } = fetched.company
-        setForm({ ...fetched.review, companyId: _id, ...rest })
+        const companyInfo = await request(`/api/company/review/${reviewId}`, 'GET', null, {
+          Authorization: `Bearer ${token}`,
+        })
+        const { _id, ...rest } = companyInfo
+        setForm({ ...reviewInfo, companyId: _id, ...rest })
       } catch (e) {}
     }
   }, [token, request, reviewId])
@@ -146,25 +142,14 @@ export const NewReviewPage = ({ edit }) => {
               <Grid className={classes.titleGrid} item xs={12}>
                 <Typography variant="h4"> Добавить отзыв</Typography>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                className={classes.searchCompanyWrapper}
-              >
+              <Grid item xs={12} sm={6} className={classes.searchCompanyWrapper}>
                 <Autocomplete
                   id="free-solo"
                   freeSolo
                   options={companies || []}
                   loading={loading}
                   value={form.companyName || ''}
-                  getOptionLabel={option =>
-                    typeof option === 'string'
-                      ? option
-                      : option
-                      ? option.name
-                      : ''
-                  }
+                  getOptionLabel={option => (typeof option === 'string' ? option : option ? option.name : '')}
                   renderInput={params => (
                     <TextField
                       {...params}
@@ -205,12 +190,7 @@ export const NewReviewPage = ({ edit }) => {
                 />
               </Grid>
               <Grid className={classes.mapContainer} item xs={12}>
-                <LocationInputMap
-                  className={classes.locationInput}
-                  form={form}
-                  setForm={setForm}
-                  setError={setError}
-                />
+                <LocationInputMap className={classes.locationInput} form={form} setForm={setForm} setError={setError} />
               </Grid>
               <Grid item xs={12}>
                 <TextField

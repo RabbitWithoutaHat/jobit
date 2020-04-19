@@ -8,7 +8,7 @@ const auth = require('../middleware/auth.middleware')
 const router = Router()
 
 function calculateCommonRating(arrayRating) {
-  const filteredRating = arrayRating.filter((rating) => rating)
+  const filteredRating = arrayRating.filter(rating => rating)
   const average = filteredRating.reduce((total, amount, index, array) => {
     // eslint-disable-next-line no-param-reassign
     total += Number(amount)
@@ -39,13 +39,7 @@ router.post('/new', auth, async (req, res) => {
     ...rest
   } = req.body
 
-  const arrayRating = [
-    teamleadRating,
-    trainingRating,
-    teamRating,
-    workplaceRating,
-    taskRating,
-  ]
+  const arrayRating = [teamleadRating, trainingRating, teamRating, workplaceRating, taskRating]
 
   try {
     const review = new Review({
@@ -85,10 +79,7 @@ router.post('/new', auth, async (req, res) => {
       await company.save()
     }
 
-    await User.findOneAndUpdate(
-      { _id: userId },
-      { $push: { reviews: [review._id] } },
-    )
+    await User.findOneAndUpdate({ _id: userId }, { $push: { reviews: [review._id] } })
 
     res.status(200).json({ message: 'Отзыв сохранен', id: review._id })
   } catch (error) {
@@ -120,13 +111,7 @@ router.put('/update', auth, async (req, res) => {
   try {
     let review
 
-    const arrayRating = [
-      teamleadRating,
-      trainingRating,
-      teamRating,
-      workplaceRating,
-      taskRating,
-    ]
+    const arrayRating = [teamleadRating, trainingRating, teamRating, workplaceRating, taskRating]
 
     if (id) {
       review = await Review.findOneAndUpdate(
@@ -158,10 +143,7 @@ router.put('/update', auth, async (req, res) => {
       })
       await review.save()
 
-      await User.findOneAndUpdate(
-        { _id: userId },
-        { $push: { reviews: [review._id] } },
-      )
+      await User.findOneAndUpdate({ _id: userId }, { $push: { reviews: [review._id] } })
     }
 
     await Company.findOneAndUpdate(
@@ -190,8 +172,8 @@ router.put('/update', auth, async (req, res) => {
 router.get('/user/:userId', auth, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId)
-    const userReviewsId = user.reviews
-    const reviews = await Review.find({ _id: { $in: userReviewsId } })
+    const userReviewsIds = user.reviews
+    const reviews = await Review.find({ _id: { $in: userReviewsIds } })
     res.json(reviews)
   } catch (error) {
     console.log(error)
@@ -214,14 +196,26 @@ router.get('/last', auth, async (req, res) => {
   }
 })
 
+// review by company
+router.get('/company/:companyId', auth, async (req, res) => {
+  try {
+    const company = await Company.findById(req.params.companyId)
+    const companyReviewsIds = company.reviews
+    const reviews = await Review.find({ _id: { $in: companyReviewsIds } })
+    res.json(reviews)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'Не удалось получить отзыв',
+    })
+  }
+})
+
 // review
 router.get('/:id', auth, async (req, res) => {
   try {
     const review = await Review.findById(req.params.id)
-    const company = await Company.findOne({
-      reviews: req.params.id,
-    })
-    res.json({ review, company })
+    res.json(review)
   } catch (error) {
     console.log(error)
 

@@ -79,7 +79,7 @@ export function ReviewList({ isMainPage }) {
       })
       setList(fetched)
     } catch (e) {}
-  }, [token, request])
+  }, [token, request, isMainPage, userId])
 
   useEffect(() => {
     getList()
