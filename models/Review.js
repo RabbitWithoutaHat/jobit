@@ -1,9 +1,6 @@
 const { Schema, model, Types } = require('mongoose')
 
 const schema = new Schema({
-  author: {
-    type: String,
-  },
   company: {
     type: Types.ObjectId,
     ref: 'Company',
@@ -12,6 +9,7 @@ const schema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  author: String,
   companyName: String,
   position: String,
   review: String,

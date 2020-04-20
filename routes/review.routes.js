@@ -106,6 +106,7 @@ router.put('/update', auth, async (req, res) => {
     workplaceRating,
     taskRating,
     commonRating,
+    userLogin,
     ...rest
   } = req.body
   try {
@@ -126,6 +127,7 @@ router.put('/update', auth, async (req, res) => {
             taskRating,
             companyName: name,
             commonRating: calculateCommonRating(arrayRating),
+            author: userLogin,
           },
         },
       )
@@ -139,7 +141,7 @@ router.put('/update', auth, async (req, res) => {
         teamRating,
         workplaceRating,
         taskRating,
-        author: userId,
+        author: userLogin,
       })
       await review.save()
 
@@ -187,7 +189,9 @@ router.get('/user/:userId', auth, async (req, res) => {
 // last reviews
 router.get('/last', async (req, res) => {
   try {
-    const reviews = await Review.find().sort({ date: -1 }).limit(4)
+    const reviews = await Review.find()
+      .sort({ date: -1 })
+      .limit(4)
     res.json(reviews)
   } catch (error) {
     res.status(500).json({
