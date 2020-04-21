@@ -9,6 +9,10 @@ const schema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  authorId: {
+    type: Types.ObjectId,
+    ref: 'User',
+  },
   author: String,
   companyName: String,
   position: String,

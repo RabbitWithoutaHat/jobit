@@ -46,6 +46,25 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     margin: 20,
+    paddingTop: 0,
+    '&:last-child': {
+      paddingBottom: 10,
+    
+    },
+  },
+  userInfoWrapper: {
+    marginTop: 15,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    fontSize: 20,
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
+  userInfo: {
+    fontSize: 25,
+  },
+  separator: {
+    padding: '0 10px',
+    fontSize: 25,
   },
 }))
 
@@ -79,6 +98,7 @@ export const ReviewReadMorePage = () => {
   if (loading) {
     return <Loader />
   }
+  const date = form.date ? new Date(form.date) : undefined
   return (
     <Card>
       <CardContent className={classes.card}>
@@ -156,6 +176,11 @@ export const ReviewReadMorePage = () => {
             }}
           />
         </Grid>
+        <div className={classes.userInfoWrapper}>
+          <Typography className={classes.userInfo}>{form.author ? form.author : 'Пользователь'}</Typography>
+          <span className={classes.separator}>|</span>
+          <Typography className={classes.userInfo}>{form.date ? date.toLocaleDateString() : 'Дата'}</Typography>
+        </div>
       </CardContent>
     </Card>
   )

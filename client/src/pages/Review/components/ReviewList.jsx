@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
@@ -70,7 +69,7 @@ const useStyles = makeStyles({
   },
 })
 
-export function ReviewList({ isMainPage }) {
+export function ReviewList({ isProfilePage, isCompanyPage, companyId }) {
   const classes = useStyles()
   const history = useHistory()
   const { token, userId } = useContext(AuthContext)
@@ -86,14 +85,18 @@ export function ReviewList({ isMainPage }) {
   }
 
   const getList = useCallback(async () => {
-    const path = isMainPage ? '/api/review/last' : `/api/review/user/${userId}`
+    const path = isProfilePage
+      ? `/api/review/user/${userId}`
+      : isCompanyPage
+      ? `/api/review/company/${companyId}`
+      : '/api/review/last'
     try {
       const fetched = await request(path, 'GET', null, {
         Authorization: `Bearer ${token}`,
       })
       setList(fetched)
     } catch (e) {}
-  }, [token, request, isMainPage, userId])
+  }, [token, request, isProfilePage, userId])
 
   useEffect(() => {
     getList()
@@ -102,7 +105,6 @@ export function ReviewList({ isMainPage }) {
   if (loading) {
     return <Loader />
   }
-  console.log(list)
 
   return (
     <Grid className={classes.marginContainer} container spacing={3}>
@@ -138,9 +140,11 @@ export function ReviewList({ isMainPage }) {
                       <Button color="primary" onClick={onClickReadReview.bind(null, review._id)}>
                         Подробнее
                       </Button>
-                      {isMainPage ? null : (
-                        <Button onClick={onClickEditReview.bind(null, review._id)}>Редактировать</Button>
-                      )}
+                      {isProfilePage ? (
+                        <Button color="primary" onClick={onClickEditReview.bind(null, review._id)}>
+                          Редактировать
+                        </Button>
+                      ) : null}
                     </div>
                   </div>
                   <div className={classes.cover}>

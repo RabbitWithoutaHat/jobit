@@ -52,6 +52,7 @@ router.post('/new', auth, async (req, res) => {
       workplaceRating,
       taskRating,
       author: userLogin,
+      authorId: userId,
     })
     await review.save()
 
@@ -127,7 +128,6 @@ router.put('/update', auth, async (req, res) => {
             taskRating,
             companyName: name,
             commonRating: calculateCommonRating(arrayRating),
-            author: userLogin,
           },
         },
       )
@@ -142,6 +142,7 @@ router.put('/update', auth, async (req, res) => {
         workplaceRating,
         taskRating,
         author: userLogin,
+        authorId: userId,
       })
       await review.save()
 

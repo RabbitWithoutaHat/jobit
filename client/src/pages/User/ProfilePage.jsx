@@ -21,7 +21,7 @@ export const ProfilePage = () => {
         <ProfileInfo setUser={setUser} user={user} setIsEdit={setIsEdit} />
       )}
 
-      <ReviewList />
+      <ReviewList isProfilePage={true} />
     </>
   )
 }
