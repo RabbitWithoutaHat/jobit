@@ -26,7 +26,7 @@ router.get('/search/:name', auth, async (req, res) => {
 // last companys
 router.get('/last', async (req, res) => {
   try {
-    const companiesList = await Company.find().sort({ date: -1 }).limit(4)
+    const companiesList = await Company.find().sort({ date: -1 })
     res.json(companiesList)
   } catch (error) {
     res.status(500).json({

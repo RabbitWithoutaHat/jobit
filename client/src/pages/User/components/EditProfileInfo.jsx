@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
       content: '""',
       position: 'absolute',
       display: 'block',
-      height: 250,
+      height: 230,
       zIndex: -5,
       marginTop: -40,
       background: 'linear-gradient(160deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
@@ -25,17 +25,18 @@ const useStyles = makeStyles(theme => ({
       left: 0,
     },
   },
+  container: {
+    justifyContent: 'center',
+    marginBottom: 30,
+  },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
-  avatarGrid: {
-    marginRight: 40,
-  },
   avatar: {
-    width: theme.spacing(25),
-    height: theme.spacing(25),
+    width: theme.spacing(21),
+    height: theme.spacing(21),
     backgroundColor: theme.palette.secondary.main,
   },
   profileNicName: {
@@ -97,8 +98,8 @@ export default function EditProfileInfo({ setIsEdit, user }) {
   return (
     <div className={classes.root}>
       <form className={classes.form} noValidate>
-        <Grid container >
-          <Grid item xs={12} sm={3} lg={2} className={classes.avatarGrid}>
+        <Grid container className={classes.container}>
+          <Grid item xs={12} sm={3} lg={2} >
             <Tooltip title="Загрузить фото">
               <Avatar
                 className={classes.avatar}

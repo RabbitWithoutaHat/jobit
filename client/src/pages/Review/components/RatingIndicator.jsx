@@ -13,6 +13,10 @@ const useStyles = makeStyles({
     width: '100%',
     justifyContent: ' space-around',
   },
+  singleChartCompanyPage: {
+    width: '80%',
+    justifyContent: ' space-around',
+  },
   circularChart: {
     display: 'block',
     margin: '10px, auto',
@@ -27,6 +31,7 @@ const useStyles = makeStyles({
   circle: {
     fill: 'none',
     strokeWidth: 2,
+    stroke: '#ffcd2f',
     strokeLinecap: 'round',
     animation: '$progress 1s ease-out forwards',
   },
@@ -40,6 +45,11 @@ const useStyles = makeStyles({
     fill: 'none',
     strokeLinecap: 'round',
   },
+  circularChartOrange: {
+    stroke: '#fff',
+    fill: 'none',
+    strokeLinecap: 'round',
+  },
   percentage: {
     fill: '#666',
     fontSize: '7px',
@@ -48,13 +58,13 @@ const useStyles = makeStyles({
   },
 })
 
-export const RatingIndicator = ({commonRating}) => {
+export const RatingIndicator = ({commonRating, isCompanyPage}) => {
   const classes = useStyles()
 
   return (
     <div className={classes.flexWrapper}>
-      <div className={classes.singleChart}>
-        <svg viewBox="0 0 36 36" className={classes.circularChartBlue}>
+      <div className={isCompanyPage ? classes.singleChartCompanyPage : classes.singleChart}>
+        <svg viewBox="0 0 36 36" className={isCompanyPage ? classes.circularChartOrange : classes.circularChartBlue }>
           <path
             className={classes.circleBg}
             d="M18 2.0845

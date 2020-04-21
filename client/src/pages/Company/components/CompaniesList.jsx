@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { RatingIndicator } from '../../Review/components/RatingIndicator'
 import { useHistory } from 'react-router-dom'
-
+import Divider from '@material-ui/core/Divider'
 
 const useStyles = makeStyles(theme => ({
   marginContainer: {
@@ -48,6 +48,13 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     height: 100,
+    marginTop: 10,
+  },
+  '.MuiCardActions-root': {
+    paddingLeft: 0,
+  },
+  button: {
+    paddingBottom: 10,
   },
 }))
 
@@ -94,15 +101,16 @@ export const CompaniesList = () => {
                       <Typography className={classes.pos} color="textSecondary">
                         {company.address ? company.address : ''}
                       </Typography>
+                      <Divider className={classes.divider} />
                       <Typography className={classes.textItem}>
                         {company.description ? company.description : ''}
                       </Typography>
                     </CardContent>
-                    <CardActions>
-                      <Button color="primary" onClick={onClickCompanyButton.bind(null, company._id)}>
-                        Отзывов: {company.reviews.length}
-                      </Button>
-                    </CardActions>
+                      <div className={classes.button}>
+                        <Button color="primary" onClick={onClickCompanyButton.bind(null, company._id)}>
+                          Отзывов: {company.reviews.length}
+                        </Button>
+                      </div>
                   </div>
                   <div className={classes.cover}>
                     <RatingIndicator />

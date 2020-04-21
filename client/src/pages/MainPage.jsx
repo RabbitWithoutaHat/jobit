@@ -1,7 +1,8 @@
 import React from 'react'
 import { ReviewList } from './Review/components/ReviewList'
 import { CompaniesList } from './Company/components/CompaniesList'
-import { Link } from '@material-ui/core'
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
@@ -19,14 +20,14 @@ export const MainPage = () => {
   return (
     <>
       <div className={classes.headerWrapper}>
-        <Link href="#" className={classes.header}>
+        <Link component={RouterLink} to="/reviews" className={classes.header}>
           Последние отзывы
         </Link>
       </div>
-      <ReviewList isMainPage={true} />
+      <ReviewList />
 
       <div className={classes.headerWrapper}>
-        <Link href="#" className={classes.header}>
+        <Link component={RouterLink} to="/company" className={classes.header}>
           Последние компании
         </Link>
       </div>
