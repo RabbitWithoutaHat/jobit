@@ -26,11 +26,25 @@ router.get('/search/:name', auth, async (req, res) => {
 // last companys
 router.get('/last', async (req, res) => {
   try {
-    const companiesList = await Company.find().sort({ date: -1 })
+    const companiesList = await Company.find().sort({ date: -1 }).limit(4)
     res.json(companiesList)
   } catch (error) {
     res.status(500).json({
       message: 'Не удалось получить последние компании',
+    })
+  }
+})
+
+
+// last companys
+router.get('/all', async (req, res) => {
+  try {
+    const companiesList = await Company.find().sort({ date: -1 }).skip(Number(req.query.skip)).limit(5)
+    res.json(companiesList)
+  } catch (error) {
+    res.status(500).json({
+      message: 'Не удалось получить последние компании',
+      error,
     })
   }
 })

@@ -4,7 +4,6 @@ import { AuthContext } from '../../../context/AuthContext'
 import Loader from '../../../common/Loader'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -58,35 +57,47 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const CompaniesList = () => {
+export const CompaniesList = ({ isMainPage }) => {
   const classes = useStyles()
   const { token } = useContext(AuthContext)
   const { request, loading } = useHttp()
   const history = useHistory()
   const [list, setList] = useState(null)
+  const [skipCounter, setSkipCounter] = useState(0)
 
   const onClickCompanyButton = id => {
     history.push(`/company/${id}`)
   }
 
   const getList = useCallback(async () => {
+    const path = isMainPage ? `/api/company/last` : `/api/company/all?skip=${skipCounter}`
     try {
-      const fetched = await request(`/api/company/last`, 'GET', null, {
+      const fetched = await request(path, 'GET', null, {
         Authorization: `Bearer ${token}`,
       })
       setList(fetched)
     } catch (e) {}
-  }, [token, request])
+  }, [token, request, skipCounter])
+
+  const handleScroll = e => {
+    console.log('khgkg');
+    
+    const element = e.target
+    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
+    if (bottom) {
+      console.log('LOG', bottom)
+    }
+  }
 
   useEffect(() => {
     getList()
-  }, [getList])
+  }, [getList, skipCounter])
 
   if (loading) {
     return <Loader />
   }
   return (
-    <>
+    <div onScroll={handleScroll}>
       {!loading && list && (
         <Container className={classes.marginContainer} container spacing={3}>
           <Grid container spacing={4}>
@@ -106,11 +117,11 @@ export const CompaniesList = () => {
                         {company.description ? company.description : ''}
                       </Typography>
                     </CardContent>
-                      <div className={classes.button}>
-                        <Button color="primary" onClick={onClickCompanyButton.bind(null, company._id)}>
-                          Отзывов: {company.reviews.length}
-                        </Button>
-                      </div>
+                    <div className={classes.button}>
+                      <Button color="primary" onClick={onClickCompanyButton.bind(null, company._id)}>
+                        Отзывов: {company.reviews.length}
+                      </Button>
+                    </div>
                   </div>
                   <div className={classes.cover}>
                     <RatingIndicator />
@@ -121,6 +132,6 @@ export const CompaniesList = () => {
           </Grid>
         </Container>
       )}
-    </>
+    </div>
   )
 }
