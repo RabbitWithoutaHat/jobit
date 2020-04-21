@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -71,6 +72,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function AuthPage() {
+  const history = useHistory()
   const auth = useContext(AuthContext)
   const { loading, error, request, clearError } = useHttp()
   const classes = useStyles()
@@ -101,6 +103,7 @@ export default function AuthPage() {
     try {
       const data = await request('/api/auth/login', 'POST', { ...form })
       auth.login(data.token, data.userId, data.userLogin)
+      history.push(`/`)
     } catch (error) {}
   }
 
@@ -192,17 +195,11 @@ export default function AuthPage() {
             </Link>
 
             {isRegistration ? (
-              <span
-                className={classes.linkButton}
-                onClick={() => setIsRegistration(false)}
-              >
+              <span className={classes.linkButton} onClick={() => setIsRegistration(false)}>
                 Войти
               </span>
             ) : (
-              <span
-                className={classes.linkButton}
-                onClick={() => setIsRegistration(true)}
-              >
+              <span className={classes.linkButton} onClick={() => setIsRegistration(true)}>
                 Регистрация
               </span>
             )}
