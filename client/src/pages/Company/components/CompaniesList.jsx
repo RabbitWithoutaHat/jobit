@@ -70,6 +70,7 @@ export const CompaniesList = ({ isMainPage }) => {
       const fetched = await request(path, 'GET', null, {
         Authorization: `Bearer ${token}`,
       })
+      setSkipCounter(10)
       setList(fetched)
     } catch (e) {}
   }, [token, request, skipCounter])
