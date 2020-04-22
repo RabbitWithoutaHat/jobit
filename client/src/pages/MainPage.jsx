@@ -27,11 +27,11 @@ export const MainPage = () => {
       <ReviewList />
 
       <div className={classes.headerWrapper}>
-        <Link component={RouterLink} to="/company" className={classes.header}>
+        <Link component={RouterLink} to="/companies" className={classes.header}>
           Последние компании
         </Link>
       </div>
-      <CompaniesList />
+      <CompaniesList isMainPage={true} />
     </>
   )
 }
