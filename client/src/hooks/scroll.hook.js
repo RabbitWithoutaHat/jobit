@@ -1,44 +1,32 @@
-import { useRef, useLayoutEffect } from 'react'
+import { useState, useEffect } from 'react'
 
-const isBrowser = typeof window !== `undefined`
+const useInfiniteScroll = (callback, isDesableHook) => {
+  const [isFetching, setIsFetching] = useState(false)
 
-function getScrollPosition({ element, useWindow }) {
-  if (!isBrowser) return { x: 0, y: 0 }
+  useEffect(() => {
+    if (!isDesableHook) {
+      window.addEventListener('scroll', handleScroll)
+      return () => window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
-  const target = element ? element.current : document.body
-  const position = target.getBoundingClientRect()
+  useEffect(() => {
+    if (!isFetching || isDesableHook) return
+    callback(() => {})
+  }, [isFetching])
 
-  return useWindow
-    ? { x: window.scrollX, y: window.scrollY }
-    : { x: position.left, y: position.top }
-}
-
-export function useScrollPosition(effect, deps, element, useWindow, wait) {
-  console.log('log->: useScrollPosition -> element', element)
-  const position = useRef(getScrollPosition({ useWindow }))
-
-  let throttleTimeout = null
-
-  const callBack = () => {
-    const currPos = getScrollPosition({ element, useWindow })
-    effect({ prevPos: position.current, currPos })
-    position.current = currPos
-    throttleTimeout = null
+  function handleScroll() {
+    if (!isDesableHook) {
+      if (
+        window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 150 ||
+        isFetching
+      )
+        return
+      setIsFetching(true)
+    }
   }
 
-  useLayoutEffect(() => {
-    const handleScroll = () => {
-      if (wait) {
-        if (throttleTimeout === null) {
-          throttleTimeout = setTimeout(callBack, wait)
-        }
-      } else {
-        callBack()
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, deps)
+  return [isFetching, setIsFetching]
 }
+
+export default useInfiniteScroll

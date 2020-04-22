@@ -1,17 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { makeStyles, Typography, Grid, Card, CardContent, Button, Container, Divider } from '@material-ui/core'
 import { useHttp } from '../../../hooks/http.hook'
+import useInfiniteScroll from '../../../hooks/scroll.hook'
+import { RatingIndicator } from '../../Review/components/RatingIndicator'
 import { AuthContext } from '../../../context/AuthContext'
 import Loader from '../../../common/Loader'
-import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import { RatingIndicator } from '../../Review/components/RatingIndicator'
-import { useHistory } from 'react-router-dom'
-import Divider from '@material-ui/core/Divider'
 
 const useStyles = makeStyles(theme => ({
   marginContainer: {
@@ -59,11 +53,12 @@ const useStyles = makeStyles(theme => ({
 
 export const CompaniesList = ({ isMainPage }) => {
   const classes = useStyles()
+  const history = useHistory()
   const { token } = useContext(AuthContext)
   const { request, loading } = useHttp()
-  const history = useHistory()
-  const [list, setList] = useState(null)
+  const [list, setList] = useState([])
   const [skipCounter, setSkipCounter] = useState(0)
+  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems, isMainPage)
 
   const onClickCompanyButton = id => {
     history.push(`/company/${id}`)
@@ -79,25 +74,34 @@ export const CompaniesList = ({ isMainPage }) => {
     } catch (e) {}
   }, [token, request, skipCounter])
 
-  const handleScroll = e => {
-    console.log('khgkg');
-    
-    const element = e.target
-    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
-    if (bottom) {
-      console.log('LOG', bottom)
-    }
+  function fetchMoreListItems() {
+    setTimeout(async () => {
+      try {
+        const fetched = await request(
+          `/api/company/all?skip=${skipCounter}`,
+          'GET',
+          null,
+          {
+            Authorization: `Bearer ${token}`,
+          },
+          false,
+        )
+        setList([...list, ...fetched])
+        setSkipCounter(skipCounter + 10)
+      } catch (e) {}
+      setIsFetching(false)
+    }, 2000)
   }
 
   useEffect(() => {
     getList()
-  }, [getList, skipCounter])
+  }, [])
 
   if (loading) {
     return <Loader />
   }
   return (
-    <div onScroll={handleScroll}>
+    <div>
       {!loading && list && (
         <Container className={classes.marginContainer} container spacing={3}>
           <Grid container spacing={4}>
