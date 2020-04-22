@@ -36,7 +36,7 @@ router.get('/last', async (req, res) => {
   }
 })
 
-// last companys
+// all companys
 router.get('/all', async (req, res) => {
   try {
     const companiesList = await Company.find()
@@ -46,8 +46,7 @@ router.get('/all', async (req, res) => {
     res.json(companiesList)
   } catch (error) {
     res.status(500).json({
-      message: 'Не удалось получить последние компании',
-      error,
+      message: 'Не удалось получить все компании',
     })
   }
 })

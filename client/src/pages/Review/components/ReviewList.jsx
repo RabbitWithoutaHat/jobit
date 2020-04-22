@@ -1,16 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import { useHttp } from '../../../hooks/http.hook'
-import { AuthContext } from '../../../context/AuthContext'
-import Loader from '../../../common/Loader'
+import { makeStyles, Card, CardContent, Typography, Button, Grid, Divider } from '@material-ui/core'
 import { RatingIndicator } from '../components/RatingIndicator'
-import Divider from '@material-ui/core/Divider'
+import { AuthContext } from '../../../context/AuthContext'
+import { useHttp } from '../../../hooks/http.hook'
+import useInfiniteScroll from '../../../hooks/scroll.hook'
+import Loader from '../../../common/Loader'
 
 const useStyles = makeStyles({
   marginContainer: {
@@ -69,12 +64,14 @@ const useStyles = makeStyles({
   },
 })
 
-export function ReviewList({ isProfilePage, isCompanyPage, companyId }) {
+export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId }) {
   const classes = useStyles()
   const history = useHistory()
   const { token, userId } = useContext(AuthContext)
   const { request, loading } = useHttp()
-  const [list, setList] = useState(null)
+  const [list, setList] = useState([])
+  const [skipCounter, setSkipCounter] = useState(0)
+  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems, isMainPage)
 
   const onClickEditReview = id => {
     history.push(`/review/edit/${id}`)
@@ -89,18 +86,40 @@ export function ReviewList({ isProfilePage, isCompanyPage, companyId }) {
       ? `/api/review/user/${userId}`
       : isCompanyPage
       ? `/api/review/company/${companyId}`
-      : '/api/review/last'
+      : isMainPage
+      ? '/api/review/last'
+      : `/api/review/all?skip=${skipCounter}`
     try {
       const fetched = await request(path, 'GET', null, {
         Authorization: `Bearer ${token}`,
       })
       setList(fetched)
+      setSkipCounter(10)
     } catch (e) {}
-  }, [token, request, isProfilePage, userId])
+  }, [token, request, isProfilePage, userId, skipCounter])
+
+  function fetchMoreListItems() {
+    setTimeout(async () => {
+      try {
+        const fetched = await request(
+          `/api/review/all?skip=${skipCounter}`,
+          'GET',
+          null,
+          {
+            Authorization: `Bearer ${token}`,
+          },
+          false,
+        )
+        setList([...list, ...fetched])
+        setSkipCounter(skipCounter + 10)
+      } catch (e) {}
+      setIsFetching(false)
+    }, 1000)
+  }
 
   useEffect(() => {
     getList()
-  }, [getList])
+  }, [])
 
   if (loading) {
     return <Loader />

@@ -190,13 +190,28 @@ router.get('/user/:userId', auth, async (req, res) => {
 // last reviews
 router.get('/last', async (req, res) => {
   try {
-    const reviews = await Review.find()
+    const reviewsList = await Review.find()
       .sort({ date: -1 })
       .limit(4)
-    res.json(reviews)
+    res.json(reviewsList)
   } catch (error) {
     res.status(500).json({
       message: 'Не удалось получить последние отзывы',
+    })
+  }
+})
+
+// all reviews
+router.get('/all', async (req, res) => {
+  try {
+    const reviewsList = await Review.find()
+      .sort({ date: -1 })
+      .skip(Number(req.query.skip))
+      .limit(10)
+    res.json(reviewsList)
+  } catch (error) {
+    res.status(500).json({
+      message: 'Не удалось получить все отзывы',
     })
   }
 })
