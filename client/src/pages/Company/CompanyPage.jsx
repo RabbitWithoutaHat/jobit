@@ -105,7 +105,7 @@ export const CompanyPage = () => {
         <Grid container className={classes.root}>
           <Grid item xs={12} sm={3} lg={2} className={classes.avatarGrid}>
             <div className={classes.cover}>
-              <RatingIndicator isCompanyPage={true} commonRating={7.4} />
+              <RatingIndicator isCompanyPage={true} commonRating={company.generalRating} />
             </div>
           </Grid>
           <div className={classes.card}>
