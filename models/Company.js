@@ -16,7 +16,7 @@ const schema = new Schema({
       ref: 'Review',
     },
   ],
-  commonRate: Number,
+  generalRating: Number,
   address: String,
   placeId: String,
 })
