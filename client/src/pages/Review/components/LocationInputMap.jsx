@@ -29,7 +29,9 @@ export default function LocationInputMap({ form, setForm, setError }) {
   }
 
   const handleSelect = (_, address) => {
-    setForm({ ...form, address: address.description, placeId: address.id })
+    if (address) {
+      setForm({ ...form, address: address.description, placeId: address.id })
+    }
   }
 
   const fetch = React.useMemo(
@@ -70,9 +72,7 @@ export default function LocationInputMap({ form, setForm, setError }) {
     <Autocomplete
       className={classes.myAutocomplete}
       id="google-map-demo"
-      getOptionLabel={option =>
-        typeof option === 'string' ? option : option ? option.address : ''
-      }
+      getOptionLabel={option => (typeof option === 'string' ? option : option ? option.address : '')}
       filterOptions={x => x}
       options={options}
       noOptionsText="Введите адрес"
@@ -92,8 +92,7 @@ export default function LocationInputMap({ form, setForm, setError }) {
         />
       )}
       renderOption={option => {
-        const matches =
-          option.structured_formatting.main_text_matched_substrings
+        const matches = option.structured_formatting.main_text_matched_substrings
         const parts = parse(
           option.structured_formatting.main_text,
           matches.map(match => [match.offset, match.offset + match.length]),
@@ -106,10 +105,7 @@ export default function LocationInputMap({ form, setForm, setError }) {
             </Grid>
             <Grid item xs>
               {parts.map((part, index) => (
-                <span
-                  key={index}
-                  style={{ fontWeight: part.highlight ? 700 : 400 }}
-                >
+                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
                   {part.text}
                 </span>
               ))}

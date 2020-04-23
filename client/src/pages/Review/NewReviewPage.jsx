@@ -83,7 +83,7 @@ export const NewReviewPage = ({ edit }) => {
     const path = reviewId ? '/api/review/update' : '/api/review/new'
     const method = reviewId ? 'PUT' : 'POST'
     try {
-      const data = await request(path, method, { ...form, userId }, { Authorization: `Bearer ${token}` })
+      const data = await request(path, method, { ...form, userId, userLogin }, { Authorization: `Bearer ${token}` })
       history.push(`/review/${reviewId || data.id}`)
     } catch (e) {
       setError(e.message)
