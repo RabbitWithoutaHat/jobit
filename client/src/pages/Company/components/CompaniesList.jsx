@@ -129,7 +129,7 @@ export const CompaniesList = ({ isMainPage }) => {
                     </div>
                   </div>
                   <div className={classes.cover}>
-                    <RatingIndicator />
+                    <RatingIndicator commonRating={company.generalRating} />
                   </div>
                 </Card>
               </Grid>

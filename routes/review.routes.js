@@ -20,6 +20,14 @@ function calculateCommonRating(arrayRating) {
   return average.toFixed(1)
 }
 
+async function calculateGeneralRating(companyId, currentReviewRating) {
+  const company = await Company.findById(companyId)
+  const companyReviewsIds = company.reviews
+  const reviews = await Review.find({ _id: { $in: companyReviewsIds } })
+  const reviewsRating = reviews.map(review => review.commonRating)
+  return calculateCommonRating([...reviewsRating, currentReviewRating])
+}
+
 // add review
 router.post('/new', auth, async (req, res) => {
   const {
@@ -40,12 +48,12 @@ router.post('/new', auth, async (req, res) => {
   } = req.body
 
   const arrayRating = [teamleadRating, trainingRating, teamRating, workplaceRating, taskRating]
-
+  const reviewCommonRating = calculateCommonRating(arrayRating)
   try {
     const review = new Review({
       ...rest,
       companyName: name,
-      commonRating: calculateCommonRating(arrayRating),
+      commonRating: reviewCommonRating,
       teamleadRating,
       trainingRating,
       teamRating,
@@ -57,6 +65,8 @@ router.post('/new', auth, async (req, res) => {
     await review.save()
 
     if (companyId) {
+      const generalRating = await calculateGeneralRating(companyId, reviewCommonRating)
+      console.log('log->: generalRating', generalRating)
       await Company.findOneAndUpdate(
         { _id: companyId },
         {
@@ -65,6 +75,7 @@ router.post('/new', auth, async (req, res) => {
             description,
             address,
             placeId,
+            generalRating,
           },
           $push: { reviews: [review._id] },
         },
@@ -75,6 +86,7 @@ router.post('/new', auth, async (req, res) => {
         description,
         address,
         placeId,
+        generalRating: reviewCommonRating,
         reviews: [review._id],
       })
       await company.save()
@@ -114,7 +126,7 @@ router.put('/update', auth, async (req, res) => {
     let review
 
     const arrayRating = [teamleadRating, trainingRating, teamRating, workplaceRating, taskRating]
-
+    const reviewCommonRating = calculateCommonRating(arrayRating)
     if (id) {
       review = await Review.findOneAndUpdate(
         { _id: id },
@@ -127,7 +139,7 @@ router.put('/update', auth, async (req, res) => {
             workplaceRating,
             taskRating,
             companyName: name,
-            commonRating: calculateCommonRating(arrayRating),
+            commonRating: reviewCommonRating,
           },
         },
       )
@@ -135,7 +147,7 @@ router.put('/update', auth, async (req, res) => {
       review = new Review({
         ...rest,
         companyName: name,
-        commonRating: calculateCommonRating(arrayRating),
+        commonRating: reviewCommonRating,
         teamleadRating,
         trainingRating,
         teamRating,
@@ -148,7 +160,7 @@ router.put('/update', auth, async (req, res) => {
 
       await User.findOneAndUpdate({ _id: userId }, { $push: { reviews: [review._id] } })
     }
-
+    const generalRating = await calculateGeneralRating(companyId, reviewCommonRating)
     await Company.findOneAndUpdate(
       { _id: companyId },
       {
@@ -157,6 +169,7 @@ router.put('/update', auth, async (req, res) => {
           description,
           address,
           placeId,
+          generalRating,
         },
         $push: { reviews: [review._id] },
       },
