@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import AvatarImg from '../../../images/hacker.png'
 
-const useStyles = makeStyles(theme => ({ 
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     fontSize: 17,
@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
       height: 230,
       zIndex: -5,
       marginTop: -40,
-      background: 'linear-gradient(160deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
+      background:
+        'linear-gradient(160deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
       width: '100vw',
       left: 0,
     },
@@ -54,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'end',
     height: 30,
     marginTop: 62,
-    color: 'white'
+    color: 'white',
   },
   textItem: {
     height: 28,
@@ -65,7 +66,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function ProfileInfo({ setIsEdit, user, setUser }) {
+export default function ProfileInfo({ setIsEdit, user, setUser, selectUserId }) {
   const classes = useStyles()
   const { token, userId } = useContext(AuthContext)
   const { request } = useHttp()
@@ -76,59 +77,44 @@ export default function ProfileInfo({ setIsEdit, user, setUser }) {
 
   const getUser = useCallback(async () => {
     try {
-      const fetched = await request(`/api/user/${userId}`, 'GET', null, {
+      const fetched = await request(`/api/user/${selectUserId || userId}`, 'GET', null, {
         Authorization: `Bearer ${token}`,
       })
       setUser(fetched)
     } catch (e) {}
-  }, [token, request, setUser, userId])
+  }, [token, request, setUser, userId, selectUserId])
 
   useEffect(() => {
     getUser()
-  }, [getUser])
+  }, [getUser, selectUserId, userId])
 
   return (
     <div className={classes.root}>
       <Grid className={classes.container} container>
-        <Grid item xs={12} sm={3} lg={2} >
+        <Grid item xs={12} sm={3} lg={2}>
           <Avatar className={classes.avatar} alt="Remy Sharp" src={AvatarImg} />
         </Grid>
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.textItem}>
-            {user.login || null}
-          </Typography>
-          <Typography className={classes.textItem}>
-            {user.email || null}
-          </Typography>
+          <Typography className={classes.textItem}>{user.login || null}</Typography>
+          <Typography className={classes.textItem}>{selectUserId ? null : user.email || null}</Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.textItem}>
-            {user.location || null}
-          </Typography>
-          <Typography className={classes.textItem}>
-            {user.phone || null}
-          </Typography>
+          <Typography className={classes.textItem}>{user.location || null}</Typography>
+          <Typography className={classes.textItem}>{user.phone || null}</Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Typography className={classes.textItem}>
-            {user.gitUrl || null}
-          </Typography>
-          <Typography className={classes.textItem}>
-            {user.siteUrl || null}
-          </Typography>
+          <Typography className={classes.textItem}>{user.gitUrl || null}</Typography>
+          <Typography className={classes.textItem}>{user.siteUrl || null}</Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-          <Button
-            onClick={onClickEditProfile}
-            type="submit"
-            color="primary"
-            className={classes.button}
-          >
-            Редактировать
-          </Button>
+          {selectUserId ? null : (
+            <Button onClick={onClickEditProfile} type="submit" color="primary" className={classes.button}>
+              Редактировать
+            </Button>
+          )}
         </Grid>
       </Grid>
     </div>

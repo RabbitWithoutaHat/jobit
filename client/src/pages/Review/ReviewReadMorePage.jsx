@@ -1,16 +1,11 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+import { makeStyles, Card, CardContent, Snackbar, Typography, Button, Grid, Divider, Link } from '@material-ui/core'
 import { NewReviewRating } from './components/NewReviewRating'
 import { NewReviewCheckbox } from './components/NewReviewCheckbox'
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
-import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import Snackbar from '@material-ui/core/Snackbar'
-import Divider from '@material-ui/core/Divider'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
 
 import Loader from '../../common/Loader'
 
@@ -50,7 +45,6 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 0,
     '&:last-child': {
       paddingBottom: 10,
-    
     },
   },
   userDivider: {
@@ -65,6 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
   userInfo: {
     fontSize: 20,
+    color: 'rgba(0, 0, 0, 0.54)',
   },
   separator: {
     padding: '0 10px',
@@ -79,7 +74,7 @@ export const ReviewReadMorePage = () => {
   const [form, setForm] = useState({})
   const { clearError, error } = useHttp()
   const { token } = useContext(AuthContext)
-
+  
   const getReview = useCallback(async () => {
     if (reviewId) {
       try {
@@ -182,7 +177,9 @@ export const ReviewReadMorePage = () => {
         </Grid>
         <Divider className={classes.userDivider} />
         <div className={classes.userInfoWrapper}>
-          <Typography className={classes.userInfo}>{form.author ? form.author : 'Пользователь'}</Typography>
+          <Link component={RouterLink} to={`/user/${form.authorId}`} className={classes.userInfo}>
+            {form.author ? form.author : 'Пользователь'}
+          </Link>
           <span className={classes.separator}>|</span>
           <Typography className={classes.userInfo}>{form.date ? date.toLocaleDateString() : 'Дата'}</Typography>
         </div>

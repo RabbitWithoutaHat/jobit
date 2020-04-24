@@ -20,7 +20,7 @@ export const useRoutes = isAuthenticated => {
           <NewReviewPage edit={true} />
         </Route>
         <Route path="/user/:id" exact>
-          <UserPage />
+        <ProfilePage />
         </Route>
         <Route path="/company/:id" exact>
           <CompanyPage />

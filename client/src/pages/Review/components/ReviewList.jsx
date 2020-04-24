@@ -1,8 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { makeStyles, Card, CardContent, Typography, Button, Grid, Divider } from '@material-ui/core'
+import { Link as RouterLink } from 'react-router-dom'
+import { makeStyles, Card, CardContent, Typography, Button, Grid, Divider, Link } from '@material-ui/core'
 import { RatingIndicator } from '../components/RatingIndicator'
-import {ListPlaceholder} from '../../../common/ListPlaceholder'
+import { ListPlaceholder } from '../../../common/ListPlaceholder'
 import { AuthContext } from '../../../context/AuthContext'
 import { useHttp } from '../../../hooks/http.hook'
 import useInfiniteScroll from '../../../hooks/scroll.hook'
@@ -53,6 +54,10 @@ const useStyles = makeStyles({
     fontSize: 14,
     color: 'rgba(0, 0, 0, 0.54)',
   },
+  author: {
+    fontSize: 14,
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
   userInfo: {
     marginTop: 8,
     display: 'flex',
@@ -65,7 +70,7 @@ const useStyles = makeStyles({
   },
 })
 
-export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId }) {
+export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId, selectUserId }) {
   const classes = useStyles()
   const history = useHistory()
   const { token, userId } = useContext(AuthContext)
@@ -80,11 +85,12 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
 
   const onClickReadReview = id => {
     history.push(`/review/${id}`)
+    
   }
 
   const getList = useCallback(async () => {
     const path = isProfilePage
-      ? `/api/review/user/${userId}`
+      ? `/api/review/user/${selectUserId || userId}`
       : isCompanyPage
       ? `/api/review/company/${companyId}`
       : isMainPage
@@ -97,7 +103,7 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
       setList(fetched)
       setSkipCounter(10)
     } catch (e) {}
-  }, [token, request, isProfilePage, userId, skipCounter])
+  }, [token, request, isProfilePage, userId, skipCounter, selectUserId])
 
   function fetchMoreListItems() {
     setTimeout(async () => {
@@ -120,11 +126,12 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
 
   useEffect(() => {
     getList()
-  }, [])
+  }, [userId, selectUserId])
 
   if (loading) {
     return <Loader />
   }
+  console.log(list)
 
   return (
     <Grid className={classes.marginContainer} container spacing={3}>
@@ -151,16 +158,16 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
                         <Typography className={classes.date}>
                           {review.date ? date.toLocaleDateString() : 'Дата'}
                         </Typography>
-                        <Typography className={classes.author}>
+                        <Link component={RouterLink} to={`/user/${review.authorId}`} className={classes.author}>
                           {review.author ? review.author : 'Пользователь'}
-                        </Typography>
+                        </Link>
                       </div>
                     </CardContent>
                     <div className={classes.button}>
                       <Button color="primary" onClick={onClickReadReview.bind(null, review._id)}>
                         Подробнее
                       </Button>
-                      {isProfilePage ? (
+                      {isProfilePage && !selectUserId ? (
                         <Button color="primary" onClick={onClickEditReview.bind(null, review._id)}>
                           Редактировать
                         </Button>
