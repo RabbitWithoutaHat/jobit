@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     minWidth: 275,
-    height: 230,
+    height: 250,
     justifyContent: 'space-between',
     padding: '15px 20px',
   },
@@ -102,10 +102,10 @@ export const CompaniesList = ({ isMainPage }) => {
     return <Loader />
   }
   return (
-    <div>
+    <>
       {!loading && list && (
         <Container className={classes.marginContainer} container spacing={3}>
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             {list.map(company => (
               <Grid item key={company._id} xs={12} sm={12} md={6}>
                 <Card className={classes.root}>
@@ -137,6 +137,6 @@ export const CompaniesList = ({ isMainPage }) => {
           </Grid>
         </Container>
       )}
-    </div>
+    </>
   )
 }
