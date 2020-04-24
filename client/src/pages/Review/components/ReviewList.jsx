@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Card, CardContent, Typography, Button, Grid, Divider } from '@material-ui/core'
 import { RatingIndicator } from '../components/RatingIndicator'
+import {ListPlaceholder} from '../../../common/ListPlaceholder'
 import { AuthContext } from '../../../context/AuthContext'
 import { useHttp } from '../../../hooks/http.hook'
 import useInfiniteScroll from '../../../hooks/scroll.hook'
@@ -127,7 +128,7 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
 
   return (
     <Grid className={classes.marginContainer} container spacing={3}>
-      {!loading && list && (
+      {!loading && list.length ? (
         <>
           {list.map(review => {
             const date = review.date ? new Date(review.date) : undefined
@@ -174,6 +175,8 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
             )
           })}
         </>
+      ) : (
+        <ListPlaceholder />
       )}
     </Grid>
   )

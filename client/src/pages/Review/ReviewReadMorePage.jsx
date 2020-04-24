@@ -46,11 +46,15 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     margin: 20,
+    marginBottom: '10px',
     paddingTop: 0,
     '&:last-child': {
       paddingBottom: 10,
     
     },
+  },
+  userDivider: {
+    marginTop: '8px',
   },
   userInfoWrapper: {
     marginTop: 15,
@@ -60,11 +64,11 @@ const useStyles = makeStyles(theme => ({
     color: 'rgba(0, 0, 0, 0.54)',
   },
   userInfo: {
-    fontSize: 25,
+    fontSize: 20,
   },
   separator: {
     padding: '0 10px',
-    fontSize: 25,
+    fontSize: 20,
   },
 }))
 
@@ -176,6 +180,7 @@ export const ReviewReadMorePage = () => {
             }}
           />
         </Grid>
+        <Divider className={classes.userDivider} />
         <div className={classes.userInfoWrapper}>
           <Typography className={classes.userInfo}>{form.author ? form.author : 'Пользователь'}</Typography>
           <span className={classes.separator}>|</span>
