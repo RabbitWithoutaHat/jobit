@@ -131,7 +131,6 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
   if (loading) {
     return <Loader />
   }
-  console.log(list)
 
   return (
     <Grid className={classes.marginContainer} container spacing={3}>
