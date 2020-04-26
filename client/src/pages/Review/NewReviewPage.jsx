@@ -79,14 +79,19 @@ export const NewReviewPage = ({ edit }) => {
   }
 
   const submitHandler = async event => {
-    event.preventDefault()
-    const path = reviewId ? '/api/review/update' : '/api/review/new'
-    const method = reviewId ? 'PUT' : 'POST'
-    try {
-      const data = await request(path, method, { ...form, userId, userLogin }, { Authorization: `Bearer ${token}` })
-      history.push(`/review/${reviewId || data.id}`)
-    } catch (e) {
-      setError(e.message)
+    const { name, position, description, review, questions, address } = form
+    if (name && position && description && review && questions && address) {
+      event.preventDefault()
+      const path = reviewId ? '/api/review/update' : '/api/review/new'
+      const method = reviewId ? 'PUT' : 'POST'
+      try {
+        const data = await request(path, method, { ...form, userId, userLogin }, { Authorization: `Bearer ${token}` })
+        history.push(`/review/${reviewId || data.id}`)
+      } catch (e) {
+        setError(e.message)
+      }
+    } else {
+      setError('Заполните обязательные поля')
     }
   }
 
@@ -149,6 +154,7 @@ export const NewReviewPage = ({ edit }) => {
                       onChange={searchCompany}
                       onSelect={onSelectCompany}
                       fullWidth
+                      required
                     />
                   )}
                 />
@@ -177,6 +183,9 @@ export const NewReviewPage = ({ edit }) => {
                   id="description"
                   value={form.description || ''}
                   onChange={changeHandler}
+                  inputProps={{
+                    maxLength: 400,
+                  }}
                 />
               </Grid>
               <Grid className={classes.mapContainer} item xs={12}>
