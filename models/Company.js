@@ -19,6 +19,10 @@ const schema = new Schema({
   generalRating: Number,
   address: String,
   placeId: String,
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
 })
 
 module.exports = model('Company', schema)

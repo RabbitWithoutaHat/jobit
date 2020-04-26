@@ -61,12 +61,12 @@ router.post('/new', auth, async (req, res) => {
       taskRating,
       author: userLogin,
       authorId: userId,
+      date: Date.now(),
     })
     await review.save()
 
     if (companyId) {
       const generalRating = await calculateGeneralRating(companyId, reviewCommonRating)
-      console.log('log->: generalRating', generalRating)
       await Company.findOneAndUpdate(
         { _id: companyId },
         {
@@ -88,6 +88,7 @@ router.post('/new', auth, async (req, res) => {
         placeId,
         generalRating: reviewCommonRating,
         reviews: [review._id],
+        date: Date.now(),
       })
       await company.save()
     }
@@ -155,6 +156,7 @@ router.put('/update', auth, async (req, res) => {
         taskRating,
         author: userLogin,
         authorId: userId,
+        date: Date.now(),
       })
       await review.save()
 
@@ -189,7 +191,7 @@ router.get('/user/:userId', auth, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId)
     const userReviewsIds = user.reviews
-    const reviews = await Review.find({ _id: { $in: userReviewsIds } })
+    const reviews = await Review.find({ _id: { $in: userReviewsIds } }).sort({ date: -1 })
     res.json(reviews)
   } catch (error) {
     console.log(error)
@@ -234,7 +236,7 @@ router.get('/company/:companyId', auth, async (req, res) => {
   try {
     const company = await Company.findById(req.params.companyId)
     const companyReviewsIds = company.reviews
-    const reviews = await Review.find({ _id: { $in: companyReviewsIds } })
+    const reviews = await Review.find({ _id: { $in: companyReviewsIds } }).sort({ date: -1 })
     res.json(reviews)
   } catch (error) {
     console.log(error)
