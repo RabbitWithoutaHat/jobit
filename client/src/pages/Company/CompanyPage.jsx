@@ -8,7 +8,7 @@ import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
 import Loader from '../../common/Loader'
 import { RatingIndicator } from '../Review/components/RatingIndicator'
-import {ReviewList} from '../Review/components/ReviewList'
+import { ReviewList } from '../Review/components/ReviewList'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,6 +51,13 @@ const useStyles = makeStyles(theme => ({
   descriptionBox: {
     maxWidth: '100%',
   },
+  header: {
+    maxWidth: '100%',
+    height: 28,
+    whiteSpace: 'normal',
+    overflow: 'hidden',
+    color: 'white',
+  },
   textItem: {
     maxWidth: '100%',
     height: 28,
@@ -61,11 +68,12 @@ const useStyles = makeStyles(theme => ({
   },
   textCompanyDescription: {
     maxWidth: '100%',
-    height: 70,
+    height: 85,
     whiteSpace: 'normal',
     overflow: 'hidden',
     paddingTop: 10,
     color: 'white',
+    fontSize: 15
   },
   divider: {
     backgroundColor: 'white',
@@ -110,7 +118,7 @@ export const CompanyPage = () => {
           </Grid>
           <div className={classes.card}>
             <Grid className={classes.column} item xs={12} sm={12} lg={12}>
-              <Typography className={classes.textItem} variant="h5" component="h1">
+              <Typography className={classes.header} variant="h5" component="h1">
                 {company.name || null}
               </Typography>
               <Typography className={classes.textItem}> {company.address || null} </Typography>

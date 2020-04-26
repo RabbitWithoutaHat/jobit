@@ -1,6 +1,5 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { UserPage } from './pages/User/UserPage'
 import { CompanyPage } from './pages/Company/CompanyPage'
 import { MainPage } from './pages/MainPage'
 import { ProfilePage } from './pages/User/ProfilePage'
