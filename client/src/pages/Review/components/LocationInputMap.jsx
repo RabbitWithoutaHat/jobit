@@ -89,6 +89,7 @@ export default function LocationInputMap({ form, setForm, setError }) {
           onChange={handleChange}
           filled={true}
           shrink
+          required
         />
       )}
       renderOption={option => {

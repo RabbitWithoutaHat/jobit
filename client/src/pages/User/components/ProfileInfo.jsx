@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     justifyContent: 'center',
-    marginBottom: 30,
+    marginBottom: 40,
   },
   paper: {
     padding: theme.spacing(2),

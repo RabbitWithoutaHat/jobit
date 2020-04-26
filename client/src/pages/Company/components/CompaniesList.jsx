@@ -10,7 +10,7 @@ import Loader from '../../../common/Loader'
 const useStyles = makeStyles(theme => ({
   marginContainer: {
     display: 'flex',
-    padding: 30,
+    padding: 20,
   },
   root: {
     display: 'flex',
