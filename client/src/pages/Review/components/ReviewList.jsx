@@ -12,7 +12,7 @@ import Loader from '../../../common/Loader'
 const useStyles = makeStyles({
   marginContainer: {
     display: 'flex',
-    padding: 30,
+    padding: 20,
   },
   root: {
     display: 'flex',
@@ -85,7 +85,6 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
 
   const onClickReadReview = id => {
     history.push(`/review/${id}`)
-    
   }
 
   const getList = useCallback(async () => {
@@ -103,7 +102,7 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
       setList(fetched)
       setSkipCounter(10)
     } catch (e) {}
-  }, [token, request, isProfilePage, userId, skipCounter, selectUserId])
+  }, [token, request, isProfilePage, userId, skipCounter, selectUserId, isCompanyPage])
 
   function fetchMoreListItems() {
     setTimeout(async () => {
@@ -157,7 +156,11 @@ export function ReviewList({ isProfilePage, isCompanyPage, isMainPage, companyId
                         <Typography className={classes.date}>
                           {review.date ? date.toLocaleDateString() : 'Дата'}
                         </Typography>
-                        <Link component={RouterLink} to={`/user/${review.authorId}`} className={classes.author}>
+                        <Link
+                          component={RouterLink}
+                          to={review.authorId === userId ? `/profile` : `/user/${review.authorId}`}
+                          className={classes.author}
+                        >
                           {review.author ? review.author : 'Пользователь'}
                         </Link>
                       </div>
