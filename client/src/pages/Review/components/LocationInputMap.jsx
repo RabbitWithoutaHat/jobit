@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
@@ -42,7 +42,25 @@ export default function LocationInputMap({ form, setForm, setError }) {
     [],
   )
 
-  React.useEffect(() => {
+  const loadScript = (src, position, id) => {
+    const script = document.createElement('script')
+    script.setAttribute('async', '')
+    script.setAttribute('id', id)
+    script.src = src
+    position.appendChild(script)
+  }
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      loadScript(
+        `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&v=3.exp&libraries=places`,
+        document.querySelector('head'),
+        'google-maps',
+      )
+    }
+  }, [])
+
+  useEffect(() => {
     let active = true
 
     if (!autocompleteService.current && window.google) {
@@ -72,7 +90,9 @@ export default function LocationInputMap({ form, setForm, setError }) {
     <Autocomplete
       className={classes.myAutocomplete}
       id="google-map-demo"
-      getOptionLabel={option => (typeof option === 'string' ? option : option ? option.address : '')}
+      getOptionLabel={option =>
+        typeof option === 'string' ? option : option ? option.address : ''
+      }
       filterOptions={x => x}
       options={options}
       noOptionsText="Введите адрес"
