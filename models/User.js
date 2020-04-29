@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model, Types } = require('mongoose')
 
 const schema = new Schema({
   email: {
@@ -35,6 +35,9 @@ const schema = new Schema({
       ref: 'Review',
     },
   ],
-});
+  profileImg: {
+    type: String,
+  },
+})
 
-module.exports = model('User', schema);
+module.exports = model('User', schema)
