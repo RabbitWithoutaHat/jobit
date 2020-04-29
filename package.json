@@ -1,0 +1,47 @@
+{
+  "name": "jobit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RabbitWithoutaHat/jobit.git"
+  },
+  "author": "Fekla <rabbdroid@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RabbitWithoutaHat/jobit/issues"
+  },
+  "homepage": "https://github.com/RabbitWithoutaHat/jobit#readme",
+  "dependencies": {
+    "@material-ui/lab": "^4.0.0-alpha.39",
+    "autosuggest-highlight": "^3.1.1",
+    "bcryptjs": "^2.4.3",
+    "config": "^3.2.4",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "express": "^4.17.1",
+    "express-validator": "^6.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.6",
+    "multer": "^1.4.2",
+    "path": "^0.12.7",
+    "prettier": "^1.19.1",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "lodash": "^4.17.15",
+    "nodemon": "^2.0.2"
+  }
+}

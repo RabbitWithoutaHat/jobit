@@ -1,0 +1,20 @@
+{
+  "extends": ["airbnb"],
+  "rules": {
+    "func-names": ["error", "never"],
+    "no-console": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-use-before-define": ["error", { "functions": false, "classes": true }],
+    "default-case": "off",
+    "no-unused-expressions": "warn",
+    "linebreak-style": 0,
+    "semi": 0,
+    "object-curly-newline": "off",
+    "no-underscore-dangle": "off",
+    "no-unused-vars": "warn",
+    "consistent-return": "off",
+    "arrow-parens": "off"
+  },
+  "plugins": ["prettier"],
+  "env": { "browser": true, "node": true }
+}
