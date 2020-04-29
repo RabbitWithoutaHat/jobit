@@ -222,22 +222,6 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Сообщения</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Уведомления</p>
-      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
@@ -269,7 +253,9 @@ export default function NavBar() {
               loading={loading}
               value={company.name || ''}
               className={classes.autocomplete}
-              getOptionLabel={option => (typeof option === 'string' ? option : option ? option.name : '')}
+              getOptionLabel={option =>
+                typeof option === 'string' ? option : option ? option.name : ''
+              }
               renderInput={params => (
                 <SearchTextField
                   {...params}
@@ -290,16 +276,6 @@ export default function NavBar() {
           {auth.isAuthenticated ? (
             <>
               <div className={classes.sectionDesktop}>
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={4} color="secondary">
-                    <MailIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton color="inherit">
-                  <Badge badgeContent={17} color="secondary">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
                 <IconButton color="inherit" onClick={profileHandler}>
                   <AccountCircleOutlinedIcon />
                 </IconButton>

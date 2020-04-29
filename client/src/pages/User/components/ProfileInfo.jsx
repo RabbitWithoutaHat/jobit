@@ -86,7 +86,7 @@ export default function ProfileInfo({ setIsEdit, user, setUser, selectUserId }) 
 
   useEffect(() => {
     getUser()
-  }, [getUser, selectUserId, userId,])
+  }, [getUser, selectUserId, userId])
 
   return (
     <div className={classes.root}>
@@ -94,8 +94,8 @@ export default function ProfileInfo({ setIsEdit, user, setUser, selectUserId }) 
         <Grid item xs={12} sm={3} lg={2}>
           <Avatar
             className={classes.avatar}
-            alt="Remy Sharp"
-            src={`/images/${user.profileImg}` || AvatarImg}
+            alt={user.login}
+            src={`/images/${user.profileImg }` || AvatarImg }
           />
         </Grid>
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
