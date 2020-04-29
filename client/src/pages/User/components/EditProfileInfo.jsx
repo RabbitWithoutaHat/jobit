@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { TextField } from '@material-ui/core'
+import { TextField, IconButton } from '@material-ui/core'
+import axios from 'axios'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
@@ -20,7 +21,8 @@ const useStyles = makeStyles(theme => ({
       height: 230,
       zIndex: -5,
       marginTop: -40,
-      background: 'linear-gradient(160deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
+      background:
+        'linear-gradient(160deg, rgba(63,81,181,1) 0%, rgba(63,95,181,1) 35%, rgba(0,212,255,0.8601190476190477) 100%)',
       width: '100vw',
       left: 0,
     },
@@ -56,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     height: 28,
     marginTop: 20,
-    color: 'white'
+    color: 'white',
   },
   textItem: {
     height: 28,
@@ -64,12 +66,21 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     paddingTop: 20,
   },
+  input: {
+    display: 'none',
+  },
+  iconAvatarPadding: {
+    padding: 0,
+  },
 }))
 
 export default function EditProfileInfo({ setIsEdit, user }) {
   const classes = useStyles()
-  const [form, setForm] = useState({})
   const { token, userId } = useContext(AuthContext)
+  const [form, setForm] = useState({})
+  const [formImg, setFormImg] = useState()
+  const [avatarImage, setAvatarImage] = useState()
+
   const { request } = useHttp()
 
   const changeHandler = event => {
@@ -80,38 +91,59 @@ export default function EditProfileInfo({ setIsEdit, user }) {
     setIsEdit(false)
   }
 
+  const onFileChange = e => {
+    const file = e.target.files[0]
+    setFormImg(file)
+    setAvatarImage(URL.createObjectURL(file))
+  }
+
   const onClickEditProfile = async event => {
     event.preventDefault()
-    try {
-      await request(
-        `/api/user`,
-        'POST',
-        { ...form, id: userId },
-        {
-          Authorization: `Bearer ${token}`,
-        },
-      )
-    } catch (e) {}
-    setIsEdit(false)
+    const formData = new FormData()
+    formData.append('myImage', formImg)
+    formData.append('id', userId)
+    formData.append('form', JSON.stringify(form))
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data: boundary=hzbudhszbduhzsbdhGUVgfYFcTdc',
+      },
+    }
+    axios
+      .post('/api/user', formData, config)
+      .then(response => {
+        setIsEdit(false)
+      })
+      .catch(error => {})
   }
 
   return (
     <div className={classes.root}>
       <form className={classes.form} noValidate>
         <Grid container className={classes.container}>
-          <Grid item xs={12} sm={3} lg={2} >
-            <Tooltip title="Загрузить фото">
-              <Avatar
-                className={classes.avatar}
-                alt="Remy Sharp"
-                src="/static/img/avatar/2.jpg"
-              />
-            </Tooltip>
+          <Grid item xs={12} sm={3} lg={2}>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="icon-button-file"
+              name="myImage"
+              type="file"
+              onChange={onFileChange}
+            />
+
+            <label htmlFor="icon-button-file">
+              <IconButton className={classes.iconAvatarPadding} component="span">
+                <Tooltip title="Загрузить фото">
+                  <Avatar
+                    className={classes.avatar}
+                    alt={user.login}
+                    src={avatarImage || `/images/${user.profileImg}`}
+                  />
+                </Tooltip>
+              </IconButton>
+            </label>
           </Grid>
           <Grid className={classes.column} item xs={12} sm={3} lg={2}>
-            <Typography
-              className={classes.textItem}
-            > {user.login} </ Typography>
+            <Typography className={classes.textItem}> {user.login} </Typography>
             <TextField
               fullWidth
               id="password"
@@ -170,7 +202,6 @@ export default function EditProfileInfo({ setIsEdit, user }) {
               type="submit"
               color="primary"
               className={classes.button}
-
             >
               Отмена
             </Button>

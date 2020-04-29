@@ -86,17 +86,23 @@ export default function ProfileInfo({ setIsEdit, user, setUser, selectUserId }) 
 
   useEffect(() => {
     getUser()
-  }, [getUser, selectUserId, userId])
+  }, [getUser, selectUserId, userId,])
 
   return (
     <div className={classes.root}>
       <Grid className={classes.container} container>
         <Grid item xs={12} sm={3} lg={2}>
-          <Avatar className={classes.avatar} alt="Remy Sharp" src={AvatarImg} />
+          <Avatar
+            className={classes.avatar}
+            alt="Remy Sharp"
+            src={`/images/${user.profileImg}` || AvatarImg}
+          />
         </Grid>
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
           <Typography className={classes.textItem}>{user.login || null}</Typography>
-          <Typography className={classes.textItem}>{selectUserId ? null : user.email || null}</Typography>
+          <Typography className={classes.textItem}>
+            {selectUserId ? null : user.email || null}
+          </Typography>
         </Grid>
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
@@ -111,7 +117,12 @@ export default function ProfileInfo({ setIsEdit, user, setUser, selectUserId }) 
 
         <Grid className={classes.column} item xs={12} sm={3} lg={2}>
           {selectUserId ? null : (
-            <Button onClick={onClickEditProfile} type="submit" color="primary" className={classes.button}>
+            <Button
+              onClick={onClickEditProfile}
+              type="submit"
+              color="primary"
+              className={classes.button}
+            >
               Редактировать
             </Button>
           )}

@@ -126,7 +126,6 @@ export const NewReviewPage = ({ edit }) => {
   if (loading) {
     return <Loader />
   }
-  console.log('FORM', form)
 
   return (
     <Card>

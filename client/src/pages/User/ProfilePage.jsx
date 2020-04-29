@@ -12,10 +12,6 @@ export const ProfilePage = () => {
   const [user, setUser] = useState({})
   const [isEdit, setIsEdit] = useState(false)
 
-  useEffect(() => {
-    console.log('Effect')
-  }, [])
-
   if (loading) {
     return <Loader />
   }
